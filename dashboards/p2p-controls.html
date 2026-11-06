@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>P2P Controls &amp; Vendor Risk · Hira Hasan</title>
+<meta name="description" content="Interactive dashboard on a real SAP purchase-to-pay event log: 251,734 PO lines, €997M. Control testing and vendor risk scoring.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="dash.css">
+<style>
+.kpis{grid-template-columns:repeat(6,minmax(0,1fr))}
+@media (max-width:980px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.variants{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;counter-reset:v}
+.variants li{display:grid;grid-template-columns:28px minmax(0,1fr) 54px;gap:8px;align-items:start;font-size:12.5px}
+.variants li::before{counter-increment:v;content:counter(v,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--mute);padding-top:2px}
+.steps{display:flex;flex-wrap:wrap;gap:3px}
+.steps span{padding:1px 6px;border-radius:2px;background:var(--panel-2);border:1px solid var(--veil);color:var(--ash);white-space:nowrap}
+.steps span.flag{border-color:#6b232a;color:#ff8a90}
+.variants .share{font-variant-numeric:tabular-nums;text-align:right;color:var(--bone)}
+.detail{display:flex;flex-direction:column;gap:10px}
+.detail h4{font-family:var(--display);font-weight:500;font-size:20px;margin:0}
+.detail dl{display:grid;grid-template-columns:1fr auto;gap:6px 14px;margin:0;font-size:13px}
+.detail dt{color:var(--ash)} .detail dd{margin:0;font-variant-numeric:tabular-nums;text-align:right}
+.detail .act{font-size:13px;color:var(--bone);border-left:2px solid var(--accent);padding-left:10px}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <a class="crumb" href="../index.html#projects">← Hira Hasan · Portfolio</a>
+  <nav aria-label="Dashboards"><a href="service-desk.html">ServiceNow service desk</a><a href="p2p-controls.html" aria-current="page">SAP procure-to-pay</a><a href="https://github.com/harleysdata/portfolio/tree/main/02-sap-procure-to-pay-compliance">Code</a></nav>
+</div></div>
+
+<main class="wrap">
+  <header class="title">
+    <p class="eyebrow">Project II · Live dashboard · SAP</p>
+    <h1>Which purchase-to-pay controls are failing, and who to review first</h1>
+    <p class="sub">A real SAP purchase-to-pay event log from a multinational coatings company: <b>1.6M events</b>, <b>251,734 PO lines</b>, <b>€997M</b> committed in 2018. Follow the story, or filter and click to explore.</p>
+  </header>
+
+  <section class="story" id="story" aria-label="Guided story">
+    <ol class="chapters"></ol>
+    <div class="narrative">
+      <div class="body" aria-live="polite"></div>
+      <div class="story-nav"><button type="button" data-prev>← Previous</button><button type="button" data-next>Next →</button></div>
+    </div>
+  </section>
+
+  <div class="filters" role="group" aria-label="Filters">
+    <label>PO month<select id="fM"><option value="-1">All of 2018</option></select></label>
+    <label>Spend area<select id="fArea"><option value="-1">All spend areas</option></select></label>
+    <label>Matching flow<select id="fFlow"><option value="-1">All flows</option></select></label>
+    <label>Company code<select id="fCo"><option value="-1">All companies</option></select></label>
+    <div class="chips" id="chips"></div>
+  </div>
+
+  <section class="kpis" id="kpis" aria-label="Key figures"></section>
+
+  <section class="grid">
+    <article class="panel s7" id="pCtl">
+      <div class="ph"><div><h3>Control exceptions</h3><p>Red = controls that can lose money directly</p></div>
+        <div class="seg" id="segCtl" role="group" aria-label="Measure"><button type="button" aria-pressed="true" data-k="n">PO lines</button><button type="button" aria-pressed="false" data-k="v">PO value</button></div></div>
+      <div class="chart" id="cCtl"></div>
+      <p class="note">Value = committed PO value of the affected lines, not the amount lost.</p>
+    </article>
+    <article class="panel s5" id="pFlow">
+      <div class="ph"><div><h3>Payment-block rate, by matching flow</h3><p>How SAP is set to check the invoice · click to filter</p></div></div>
+      <div class="chart" id="cFlow"></div>
+      <p class="note">Consignment stock is settled separately, so it has no line invoices to block.</p>
+    </article>
+    <article class="panel s12" id="pPick">
+      <div class="ph"><div><h3>Pick a control to trace</h3><p>Drives the two charts below</p></div>
+        <div class="seg" id="segMetric" role="group" aria-label="Control to trace">
+          <button type="button" aria-pressed="true" data-k="0">After-the-fact PO</button><button type="button" aria-pressed="false" data-k="2">Same person ordered &amp; received</button><button type="button" aria-pressed="false" data-k="5">Payment block</button></div></div>
+    </article>
+    <article class="panel s6" id="pTrend">
+      <div class="ph"><div><h3 id="hTrend">Rate by PO month</h3><p>Share of PO lines created that month</p></div></div>
+      <div class="chart" id="cTrend"></div>
+    </article>
+    <article class="panel s6" id="pArea">
+      <div class="ph"><div><h3 id="hArea">Rate by spend area</h3><p>Click a bar to filter</p></div></div>
+      <div class="chart" id="cArea"></div>
+    </article>
+    <article class="panel s7" id="pVend">
+      <div class="ph"><div><h3>Vendor risk vs. spend</h3><p>307 vendors with 100+ PO lines · size = PO lines · click a vendor</p></div></div>
+      <div class="chart" id="cVend"></div>
+      <div class="legend"><span><i style="background:#d42a35"></i>High (≥ 70)</span><span><i style="background:#e0a33a"></i>Medium (45–70)</span><span><i style="background:#8d8487"></i>Low</span></div>
+      <p class="note">Score = weighted percentile of each control rate against peer vendors. Covers all of 2018 and ignores the filters above.</p>
+    </article>
+    <article class="panel s5" id="pDetail">
+      <div class="ph"><div><h3>Vendor detail</h3><p>Click a vendor on the chart or in the list</p></div></div>
+      <div class="detail" id="cDetail"></div>
+      <div id="cTop"></div>
+    </article>
+    <article class="panel s6" id="pPay">
+      <div class="ph"><div><h3>Days from vendor invoice to payment</h3><p>Paid lines, 10-day buckets · red = paid after 90 days</p></div></div>
+      <div class="chart" id="cPay"></div>
+    </article>
+    <article class="panel s6" id="pVar">
+      <div class="ph"><div><h3>Most common process paths</h3><p>7,440 distinct paths in all · red = a step that signals rework</p></div></div>
+      <ol class="variants" id="cVar"></ol>
+    </article>
+  </section>
+
+  <section class="method">
+    <div><h4>Data</h4><p>BPI Challenge 2019 (van Dongen, 4TU.ResearchData, CC BY 4.0): a real SAP purchase-to-pay extract. Vendors, users and companies are anonymised in the source.</p></div>
+    <div><h4>Method</h4><p>A streaming parser turns the 729 MB XES log into tables. Each control is tested on the first time each step happened on the line. Lines are pre-aggregated by month, spend area, flow and company, so filtering here matches filtering the raw lines exactly.</p></div>
+    <div><h4>Code &amp; Power BI model</h4><p>Parser, control logic, SQL vendor scoring, DAX measures and the write-up are on <a href="https://github.com/harleysdata/portfolio/tree/main/02-sap-procure-to-pay-compliance">GitHub</a>.</p></div>
+  </section>
+</main>
+
+<script src="dash.js"></script>
+<script>
+(function () {
+  "use strict";
+  var D, F = { m: -1, area: -1, flow: -1, co: -1 }, CTLMODE = "n", METRIC = 0, VSEL = null;
+  var $ = function (id) { return document.getElementById(id); }, fmt = Dash.fmt, C = Dash.C;
+  // row layout: m, area, flow, company, lines, value, paid, ctl x6 (7..12), ctl value x6 (13..18), hist x19 (19..37)
+  var CTL = [
+    { name: "PO raised after the invoice", short: "After-the-fact PO", hi: 1 },
+    { name: "Paid without a goods receipt", short: "Paid without GR", hi: 1 },
+    { name: "Same person ordered and received", short: "SoD conflict", hi: 1 },
+    { name: "Price changed after the invoice", short: "Price change", hi: 0 },
+    { name: "Invoice before goods receipt (allowed)", short: "Invoice first", hi: 0 },
+    { name: "Invoice hit a payment block", short: "Payment block", hi: 0 }
+  ];
+  var MLAB = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  fetch("data/p2p.json").then(function (r) { return r.json(); }).then(function (d) {
+    D = d;
+    d.dims.m.forEach(function (v, i) { if (v !== "Other") $("fM").add(new Option(MLAB[+v.slice(5) - 1] + " 2018", i)); });
+    d.dims.area.forEach(function (v, i) { $("fArea").add(new Option(v, i)); });
+    d.dims.flow.forEach(function (v, i) { $("fFlow").add(new Option(v, i)); });
+    d.dims.company.forEach(function (v, i) { $("fCo").add(new Option(v.replace("companyID_", "Company "), i)); });
+    [["fM", "m"], ["fArea", "area"], ["fFlow", "flow"], ["fCo", "co"]].forEach(function (p) {
+      $(p[0]).addEventListener("change", function () { F[p[1]] = +this.value; render(); });
+    });
+    Dash.seg($("segCtl"), function (k) { CTLMODE = k; ctlChart(); });
+    Dash.seg($("segMetric"), function (k) { METRIC = +k; trendChart(); areaChart(); });
+    D.V = d.vendors.map(function (r) { var o = {}; d.vendor_cols.forEach(function (c, i) { o[c] = r[i]; }); return o; });
+    vendorChart(); variants();
+    Dash.story($("story"), CHAPTERS);
+    Dash.onResize(function () { render(); vendorChart(); });
+  });
+
+  function set(o, metric) { F = Object.assign({ m: -1, area: -1, flow: -1, co: -1 }, o || {}); if (metric != null) { METRIC = metric; Dash.setSeg($("segMetric"), String(metric)); } render(); }
+
+  function rows(ignore) {
+    return D.rows.filter(function (r) {
+      return (ignore === "m" || F.m < 0 || r[0] === F.m) && (ignore === "area" || F.area < 0 || r[1] === F.area) &&
+             (ignore === "flow" || F.flow < 0 || r[2] === F.flow) && (F.co < 0 || r[3] === F.co);
+    });
+  }
+  function sum(rs, j) { var s = 0; rs.forEach(function (r) { s += r[j]; }); return s; }
+
+  function render() {
+    Dash.hideTip();
+    $("fM").value = F.m; $("fArea").value = F.area; $("fFlow").value = F.flow; $("fCo").value = F.co;
+    var rs = rows();
+    kpis(rs); chips(); ctlChart(); flowChart(); trendChart(); areaChart(); payChart(rs);
+  }
+
+  function kpis(rs) {
+    var n = sum(rs, 4), v = sum(rs, 5), filtered = n !== 251734;
+    var base = '<span class="d">' + (filtered ? fmt.pct(n / 251734) + " of all lines" : "All of 2018") + "</span>";
+    function k(label, val, sub) { return '<div class="kpi"><span class="k">' + label + '</span><span class="v">' + val + "</span>" + sub + "</div>"; }
+    function r(j) { return '<span class="d">' + (n ? fmt.pct(sum(rs, j) / n, 2) : "–") + " of lines</span>"; }
+    $("kpis").innerHTML = k("PO lines", fmt.int(n), base) + k("Committed value", fmt.eurM(v), '<span class="d">' + fmt.int(sum(rs, 6)) + " lines paid</span>") +
+      k("After-the-fact POs", fmt.int(sum(rs, 7)), r(7)) + k("Paid without GR", fmt.int(sum(rs, 8)), r(8)) +
+      k("Same person ordered &amp; received", fmt.int(sum(rs, 9)), r(9)) + k("Payment-block rate", n ? fmt.pct(sum(rs, 12) / n, 1) : "–", '<span class="d">' + fmt.int(sum(rs, 12)) + " lines blocked</span>");
+  }
+
+  function chips() {
+    var c = [], L = D.dims;
+    if (F.m >= 0) c.push(["m", "Month", MLAB[+L.m[F.m].slice(5) - 1] + " 2018"]);
+    if (F.area >= 0) c.push(["area", "Spend area", L.area[F.area]]);
+    if (F.flow >= 0) c.push(["flow", "Flow", L.flow[F.flow]]);
+    if (F.co >= 0) c.push(["co", "Company", L.company[F.co].replace("companyID_", "")]);
+    $("chips").innerHTML = c.map(function (x) { return '<button class="chip" data-k="' + x[0] + '" aria-label="Remove filter ' + x[1] + '"><b>' + x[1] + "</b> " + x[2] + " ✕</button>"; }).join("") +
+      (c.length ? '<button class="reset" type="button" id="resetAll">Clear all</button>' : "");
+    $("chips").querySelectorAll(".chip").forEach(function (b) { b.addEventListener("click", function () { F[b.dataset.k] = -1; render(); }); });
+    if (c.length) $("resetAll").addEventListener("click", function () { set(); });
+  }
+
+  function ctlChart() {
+    var rs = rows(), n = sum(rs, 4);
+    var data = CTL.map(function (c, k) {
+      var cnt = sum(rs, 7 + k), val = sum(rs, 13 + k);
+      return { label: c.name, value: CTLMODE === "n" ? cnt : val, color: c.hi ? C.accent : C.base,
+        valueLabel: CTLMODE === "n" ? fmt.int(cnt) : fmt.eurM(val),
+        tip: "<b>" + c.name + "</b><br>" + fmt.int(cnt) + " PO lines (" + (n ? fmt.pct(cnt / n, 2) : "–") + ")<br>" + fmt.eurM(val) + " committed value" };
+    }).sort(function (a, b) { return b.value - a.value; });
+    Dash.hbars($("cCtl"), data, { labelW: 250, rowH: 32, label: "Control exceptions: " + data.map(function (d) { return d.label + " " + d.valueLabel; }).join("; ") });
+  }
+
+  function flowChart() {
+    var rs = rows("flow"), L = D.dims.flow;
+    var data = L.map(function (f, k) {
+      var sub = rs.filter(function (r) { return r[2] === k; }), n = sum(sub, 4), b = sum(sub, 12);
+      return { k: k, label: f.replace("3-way match, ", "3-way, "), value: n ? b / n : 0, n: n, on: F.flow === k,
+        color: n && b / n > .2 ? C.accent : C.base, tip: "<b>" + f + "</b><br>" + fmt.int(n) + " PO lines<br>" + fmt.pct(n ? b / n : 0) + " hit a payment block" };
+    }).sort(function (a, b) { return b.n - a.n; });
+    Dash.hbars($("cFlow"), data, { labelW: 170, rowH: 34, max: .35, format: function (v) { return fmt.pct(v, 0); },
+      label: "Payment block rate by flow", onClick: function (i) { var k = data[i].k; F.flow = F.flow === k ? -1 : k; render(); } });
+  }
+
+  function trendChart() {
+    var rs = rows("m"), j = 7 + METRIC;
+    $("hTrend").textContent = CTL[METRIC].short + " rate, by PO month";
+    var pts = MLAB.map(function (lab, k) {
+      var mi = D.dims.m.indexOf("2018-" + String(k + 1).padStart(2, "0")), sub = rs.filter(function (r) { return r[0] === mi; });
+      var n = sum(sub, 4), c = sum(sub, j);
+      return { label: lab, value: n >= 100 ? c / n : null, tip: "<b>" + lab + " 2018</b><br>" + (n >= 100 ? fmt.pct(c / n, 2) : "Too few lines") + "<br>" + fmt.int(c) + " of " + fmt.int(n) + " lines" };
+    });
+    var hi = Math.max.apply(null, pts.map(function (p) { return p.value || 0; }));
+    Dash.line($("cTrend"), pts, { min: 0, max: hi * 1.25 || .01, height: 300, format: function (v) { return fmt.pct(v, 1); },
+      label: CTL[METRIC].short + " rate by month",
+      onClick: function (k) { var mi = D.dims.m.indexOf("2018-" + String(k + 1).padStart(2, "0")); F.m = F.m === mi ? -1 : mi; render(); } });
+  }
+
+  function areaChart() {
+    var rs = rows("area"), j = 7 + METRIC;
+    $("hArea").textContent = CTL[METRIC].short + " rate, by spend area";
+    var data = D.dims.area.map(function (a, k) {
+      var sub = rs.filter(function (r) { return r[1] === k; }), n = sum(sub, 4), c = sum(sub, j);
+      return { k: k, label: a, n: n, value: n ? c / n : 0, on: F.area === k, tip: "<b>" + a + "</b><br>" + fmt.pct(n ? c / n : 0, 2) + "<br>" + fmt.int(c) + " of " + fmt.int(n) + " lines" };
+    }).filter(function (d) { return d.n >= 50; }).sort(function (a, b) { return b.value - a.value; });
+    var top = data.length ? data[0].value : 0;
+    data.forEach(function (d) { d.color = d.value >= top * .5 && d.value > 0 ? C.accent : C.base; });
+    Dash.hbars($("cArea"), data, { labelW: 170, rowH: 26, format: function (v) { return fmt.pct(v, 1); },
+      label: CTL[METRIC].short + " rate by spend area", onClick: function (i) { var k = data[i].k; F.area = F.area === k ? -1 : k; render(); } });
+  }
+
+  function payChart(rs) {
+    var bins = [];
+    for (var b = 0; b < 19; b++) bins.push(sum(rs, 19 + b));
+    var tot = bins.reduce(function (a, c) { return a + c; }, 0), over = 0;
+    for (b = 9; b < 19; b++) over += bins[b];
+    Dash.bars($("cPay"), bins.map(function (v, b) {
+      var lab = b === 18 ? "180+" : String(b * 10);
+      return { label: lab, value: v, color: b >= 9 ? C.accent : C.base, tip: "<b>" + (b === 18 ? "180+ days" : b * 10 + "–" + (b * 10 + 9) + " days") + "</b><br>" + fmt.int(v) + " lines (" + (tot ? fmt.pct(v / tot, 1) : "–") + ")" };
+    }), { hideValues: true, labelEvery: 3, height: 220, tickFormat: function (v) { return v >= 1000 ? Math.round(v / 1000) + "k" : Math.round(v); },
+      label: "Days to pay histogram; " + (tot ? fmt.pct(over / tot, 0) : "–") + " paid after 90 days" });
+  }
+
+  function tierColor(t) { return t === "High" ? C.accent : t === "Medium" ? C.amber : C.base; }
+  function vendorChart() {
+    var V = D.V;
+    Dash.scatter($("cVend"), V.map(function (v) {
+      return { x: Math.max(v.spend_eur_m, .01), y: v.risk_score, r: 3 + Math.sqrt(v.po_lines) / 9, color: tierColor(v.risk_tier), on: VSEL === v.vendor,
+        tip: "<b>" + v.vendor.replace("vendorID_", "Vendor ") + "</b> · " + v.risk_tier + "<br>Risk score " + v.risk_score + "<br>€" + v.spend_eur_m + "M · " + fmt.int(v.po_lines) + " lines" };
+    }), { xLog: true, xMin: .01, xMax: 40, xTicks: [.01, .1, 1, 10], xFormat: function (v) { return "€" + (v < 1 ? v : v) + "M"; }, height: 320,
+      xLabel: "Spend, € millions (log scale)", yLabel: "Risk score", bands: [{ y: 70, label: "High ≥ 70", color: C.accent }, { y: 45, label: "Medium ≥ 45", color: C.amber }],
+      label: "Scatter of 307 vendors by spend and risk score", onClick: function (i) { pick(V[i].vendor); } });
+    detail();
+  }
+  function pick(v) { VSEL = VSEL === v ? null : v; vendorChart(); }
+  function detail() {
+    var v = D.V.filter(function (x) { return x.vendor === VSEL; })[0];
+    if (!v) {
+      $("cDetail").innerHTML = '<p class="note">No vendor selected. The highest-risk vendors are listed below.</p>';
+    } else {
+      var acts = [];
+      if (v.pct_paid_without_gr >= 1) acts.push("Reconcile the vendor statement: paid-without-GR rate is " + v.pct_paid_without_gr + "%.");
+      if (v.pct_after_the_fact >= 3) acts.push("Send after-the-fact POs to requesters' managers (" + v.pct_after_the_fact + "% of lines).");
+      if (v.pct_sod >= 2) acts.push("Review who both orders and receives for this vendor (" + v.pct_sod + "% SoD).");
+      if (v.pct_payment_block >= 30) acts.push("Check invoice quality with the vendor: " + v.pct_payment_block + "% of lines blocked.");
+      if (!acts.length) acts.push("No single control stands out; monitor through the quarterly scorecard.");
+      $("cDetail").innerHTML = "<h4>" + v.vendor.replace("vendorID_", "Vendor ") + ' <span class="tier ' + v.risk_tier + '">' + v.risk_tier + " · " + v.risk_score + "</span></h4>" +
+        "<dl><dt>PO lines</dt><dd>" + fmt.int(v.po_lines) + "</dd><dt>Spend</dt><dd>€" + v.spend_eur_m + "M</dd>" +
+        "<dt>After-the-fact POs</dt><dd>" + v.pct_after_the_fact + "%</dd><dt>Paid without GR</dt><dd>" + v.pct_paid_without_gr + "%</dd>" +
+        "<dt>Same person ordered &amp; received</dt><dd>" + v.pct_sod + "%</dd><dt>Price change after invoice</dt><dd>" + v.pct_price_change + "%</dd>" +
+        "<dt>Payment blocks</dt><dd>" + v.pct_payment_block + "%</dd></dl>" +
+        '<p class="act"><b>Suggested action:</b> ' + acts.join(" ") + "</p>";
+    }
+    var top = D.V.slice().sort(function (a, b) { return b.risk_score - a.risk_score; }).slice(0, 8).map(function (x) {
+      return { vendor: x.vendor, name: x.vendor.replace("vendorID_", "Vendor "), score: x.risk_score, spend: x.spend_eur_m, tier: x.risk_tier };
+    });
+    Dash.table($("cTop"), [
+      { key: "name", label: "Highest risk" },
+      { key: "score", label: "Score", num: 1 },
+      { key: "spend", label: "Spend", num: 1, fmt: function (v) { return "€" + v + "M"; } }
+    ], top, { sortKey: "score", onRow: function (r) { pick(r.vendor); }, isOn: function (r) { return r.vendor === VSEL; } });
+  }
+
+  function variants() {
+    var flag = /Remove Payment Block|Change|Cancel|Delete/;
+    $("cVar").innerHTML = D.variants.map(function (v) {
+      var steps = v[0].split(" → ").map(function (s) {
+        var short = s.replace("Create Purchase Order Item", "Create PO").replace("Record Goods Receipt", "Goods receipt").replace("Vendor creates invoice", "Vendor invoice")
+          .replace("Record Invoice Receipt", "Invoice posted").replace("Clear Invoice", "Paid").replace("Remove Payment Block", "Block removed").replace("Receive Order Confirmation", "Order confirmed")
+          .replace("Create Purchase Requisition Item", "Requisition").replace("Record Service Entry Sheet", "Service entry");
+        return '<span class="' + (flag.test(s) ? "flag" : "") + '">' + short + "</span>";
+      }).join("");
+      return '<li><div class="steps">' + steps + '</div><span class="share">' + fmt.pct(v[2], 1) + "</span></li>";
+    }).join("");
+  }
+
+  var CHAPTERS = [
+    { title: "The headline", focus: ["kpis", "pVar"], apply: function () { set({}, 0); },
+      body: "<p><b>251,734 PO lines</b> and <b>€997M</b> of committed spend across 1,975 vendors. The textbook path (create PO → goods receipt → invoice → pay) covers only about a third of lines. There are <b>7,440 distinct paths</b>.</p><p class='so'>Question: which controls fail, how much spend do they touch, and which vendors should procurement look at first?</p>" },
+    { title: "Three controls that can lose money", focus: ["pCtl"], apply: function () { set({}, 0); },
+      body: "<p>The red bars are controls where money can go out the door wrongly: <b>5,149 lines</b> ordered and received by the same person, <b>3,450</b> POs raised after the invoice, and <b>655</b> paid with no goods receipt. Together that's <b>8,887 lines and €108.5M</b> of committed value. Switch to <i>PO value</i> to see the exposure.</p><p class='so'>Same-person ordering and receiving is a segregation-of-duties gap. It's fixable with role design in SAP.</p>" },
+    { title: "The payment-block machine", focus: ["pFlow", "pTrend"], apply: function () { set({}, 5); },
+      body: "<p>22% of lines hit a payment block, almost all in the <b>invoice-before-GR</b> flow, which 88% of lines use. When an invoice is posted before the goods arrive, <b>97%</b> of those lines are blocked, for a median of 7 days. December looks better only because those invoices hadn't been processed when the extract was taken.</p><p class='so'>The blocks are the system working, but someone in AP clears every one. Switching reliable stock materials to GR-based invoice verification removes the rework at the source.</p>" },
+    { title: "Buy first, PO later", focus: ["pArea"], apply: function () { set({}, 0); },
+      body: "<p>After-the-fact POs are concentrated in indirect spend: <b>50%</b> of <i>Real Estate</i> lines, <b>14%</b> of <i>Others</i> and <b>6%</b> of <i>Trading &amp; End Products</i>, against under 1% in the big direct-materials areas like Packaging and Sales. In the small 2-way-match flow, <b>57%</b> of lines work this way. Click a spend area to see its controls change everywhere on the page.</p><p class='so'>Publish a no-PO-no-pay rule for those areas, and report after-the-fact POs by requester every month.</p>" },
+    { title: "Who to review first", focus: ["pVend", "pDetail"], apply: function () { set({}, 0); VSEL = D.V[0].vendor; vendorChart(); },
+      body: "<p>Each of 307 vendors gets a 0–100 score from percentile ranks of its control rates, weighted towards the controls that can lose money. <b>17 vendors</b> score High; they hold <b>€82.9M</b> (12%) of scored spend. Click any dot for the vendor's profile and a suggested action.</p><p class='so'>Percentiles stop one high-volume control (payment blocks) from drowning out rare but serious ones. The weights live in one SQL view, so a risk team can change them.</p>" },
+    { title: "What I'd change", focus: [], apply: function () { set({}, 0); VSEL = null; vendorChart(); },
+      body: "<p><b>1.</b> Remove goods-receipt rights from users who create POs, or add a second approver above a value threshold. <b>2.</b> No-PO-no-pay for Real Estate, Others and Trading. <b>3.</b> GR-based invoice verification for reliable stock materials. <b>4.</b> Send the 655 paid-without-GR lines to AP for recovery. <b>5.</b> Put the 17 High-risk vendors into the next quarterly third-party review.</p><p class='so'>Every figure on this page is computed live from the line-level data.</p>" }
+  ];
+})();
+</script>
+</body>
+</html>

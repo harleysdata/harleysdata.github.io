@@ -96,6 +96,9 @@ section.block + section.block .wrap{border-top:1px solid var(--veil)}
 .project .tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
 .project .repo{display:inline-block;margin-top:18px;font-family:var(--mono);font-size:13px;color:var(--ember);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--ember) 50%,transparent)}
 .project .repo:hover{color:var(--bone)}
+.links-row{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;margin-top:18px}
+.links-row .repo{margin-top:0}
+.btn.sm{font-size:13.5px;padding:9px 14px}
 figure{margin:0;display:flex;flex-direction:column;gap:10px}
 figure img{display:block;width:100%;height:auto;border-radius:2px;background:var(--plate);padding:10px}
 figcaption{font-size:13px;color:var(--ash)}
@@ -246,6 +249,7 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
           <p class="lede">I turn messy processes into clear requirements, build the reporting that shows leaders what's happening, and test systems before they reach users. <strong>Former Senior Program Analyst at Scotiabank</strong> and <strong>Product Manager Intern at Jones Autos.</strong></p>
           <div class="ctas">
             <a class="btn solid" href="#projects">See my projects</a>
+            <a class="btn" href="dashboards/service-desk.html">Live dashboards</a>
             <a class="btn" href="#contact">Get in touch</a>
           </div>
           <div class="creds" aria-label="Highlights">
@@ -376,7 +380,7 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
       <div class="head">
         <p class="eyebrow">Projects</p>
         <h2>Real enterprise data, worked end to end</h2>
-        <p>Two projects use real, public logs from ServiceNow and SAP: 1.7 million events in all. One designs the integration between the three systems I used at Scotiabank, one turns the findings into a product plan, and one evaluates AI answers. Every number on this page comes from code you can run.</p>
+        <p>Two projects use real, public logs from ServiceNow and SAP: 1.7 million events in all, each with a live, interactive dashboard that tells the story step by step. One designs the integration between the three systems I used at Scotiabank, one turns the findings into a product plan, and one evaluates AI answers. Every number on this page comes from code you can run.</p>
       </div>
       <div class="projects">
 
@@ -387,11 +391,11 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
             <p class="problem">A real ServiceNow audit log: 141,712 events, 24,918 incidents. Where is SLA being lost, and what can change in the tool to fix it?</p>
             <ul class="findings">
               <li>SLA falls from <strong>78% to 14%</strong> as tickets are reassigned, and the drop holds within the same priority. Two-thirds of breaches involved a reassignment.</li>
-              <li>Built 11 assignment rules on the first 60% of the year and tested them on the rest: first-touch accuracy rose from <strong>51% to 82%</strong> on the tickets they cover, with 138 fixed and 3 broken.</li>
-              <li>Critical tickets meet SLA <strong>1.9%</strong> of the time, even with no handoffs. The SLA definitions need fixing before SLA is used as a team KPI.</li>
+              <li>Built 11 assignment rules on the earliest 60% of tickets and tested them on the later 40%: first-touch accuracy rose from <strong>51% to 82%</strong> on the tickets they cover, with 138 fixed and 3 broken.</li>
+              <li>Critical tickets meet SLA <strong>1.9%</strong> of the time, and only 3.6% even when nobody reassigns them. The SLA definitions need fixing before SLA is used as a team KPI.</li>
             </ul>
             <div class="tools"><span class="chip">Python · pandas</span><span class="chip">SQL · SQLite marts</span><span class="chip">Power BI · DAX</span><span class="chip">pytest</span></div>
-            <a class="repo" href="https://github.com/harleysdata/portfolio/tree/main/01-servicenow-service-desk-analytics" target="_blank" rel="noopener">Code and full write-up →</a>
+            <div class="links-row"><a class="btn solid sm" href="dashboards/service-desk.html">Open the live dashboard</a><a class="repo" href="https://github.com/harleysdata/portfolio/tree/main/01-servicenow-service-desk-analytics" target="_blank" rel="noopener">Code and full write-up →</a></div>
           </div>
           <div class="viz">
             <div class="viz-head">
@@ -418,7 +422,7 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
               <li>Scored 307 vendors with SQL percentile ranks: <strong>17 High-risk vendors</strong> hold €82.9M of spend.</li>
             </ul>
             <div class="tools"><span class="chip">Process mining</span><span class="chip">SQL · window functions</span><span class="chip">Streaming XML parser</span><span class="chip">Power BI · DAX</span></div>
-            <a class="repo" href="https://github.com/harleysdata/portfolio/tree/main/02-sap-procure-to-pay-compliance" target="_blank" rel="noopener">Code and full write-up →</a>
+            <div class="links-row"><a class="btn solid sm" href="dashboards/p2p-controls.html">Open the live dashboard</a><a class="repo" href="https://github.com/harleysdata/portfolio/tree/main/02-sap-procure-to-pay-compliance" target="_blank" rel="noopener">Code and full write-up →</a></div>
           </div>
           <div class="viz">
             <div class="viz-head">

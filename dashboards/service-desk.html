@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Service Desk Performance · Hira Hasan</title>
+<meta name="description" content="Interactive dashboard on a real ServiceNow incident log: 24,918 incidents. Why a third of tickets miss SLA, and what to change.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="dash.css">
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <a class="crumb" href="../index.html#projects">← Hira Hasan · Portfolio</a>
+  <nav aria-label="Dashboards"><a href="service-desk.html" aria-current="page">ServiceNow service desk</a><a href="p2p-controls.html">SAP procure-to-pay</a><a href="https://github.com/harleysdata/portfolio/tree/main/01-servicenow-service-desk-analytics">Code</a></nav>
+</div></div>
+
+<main class="wrap">
+  <header class="title">
+    <p class="eyebrow">Project I · Live dashboard · ServiceNow</p>
+    <h1>Why a third of tickets miss SLA</h1>
+    <p class="sub">A real ServiceNow incident audit log: <b>141,712 events</b> rolled up to <b>24,918 incidents</b>, opened mainly March–May 2016. Follow the story on the left, or use the filters and click any bar, cell or row to cross-filter the whole page.</p>
+  </header>
+
+  <section class="story" id="story" aria-label="Guided story">
+    <ol class="chapters"></ol>
+    <div class="narrative">
+      <div class="body" aria-live="polite"></div>
+      <div class="story-nav"><button type="button" data-prev>← Previous</button><button type="button" data-next>Next →</button></div>
+    </div>
+  </section>
+
+  <div class="filters" role="group" aria-label="Filters">
+    <label>Priority<select id="fPri"><option value="-1">All priorities</option></select></label>
+    <label>Category<select id="fCat"><option value="-1">All categories</option></select></label>
+    <label>First assigned to<select id="fFg"><option value="-1">All groups</option></select></label>
+    <div class="chips" id="chips"></div>
+  </div>
+
+  <section class="kpis" id="kpis" aria-label="Key figures"></section>
+
+  <section class="grid">
+    <article class="panel s7" id="pBand">
+      <div class="ph"><div><h3>SLA met, by times reassigned</h3><p>Click a bar to filter to that band</p></div></div>
+      <div class="chart" id="cBand"></div>
+      <details class="data"><summary>Data table</summary><div id="tBand"></div></details>
+    </article>
+    <article class="panel s5" id="pState">
+      <div class="ph"><div><h3>Where open time goes</h3><p>Share of elapsed hours spent in each state</p></div></div>
+      <div class="chart" id="cState"></div>
+      <p class="note">Calendar hours. The log doesn't say whether the SLA clock pauses while waiting.</p>
+    </article>
+    <article class="panel s6" id="pTtr">
+      <div class="ph"><div><h3>How long tickets take to resolve</h3><p>Tickets by time from open to resolved · bar colour shows SLA met in that bucket</p></div></div>
+      <div class="chart" id="cTtr"></div>
+      <div class="legend"><span><i style="background:#8d8487"></i>Most met SLA (≥ 50%)</span><span><i style="background:#d42a35"></i>Most missed SLA</span></div>
+    </article>
+    <article class="panel s6" id="pCat">
+      <div class="ph"><div><h3>SLA met, by category</h3><p>Top 10 categories by volume · click to filter</p></div></div>
+      <div class="chart" id="cCat"></div>
+    </article>
+    <article class="panel s7" id="pHeat">
+      <div class="ph"><div><h3>Who receives the ticket vs. who resolves it</h3><p>Rows: first group. Columns: resolving group. Outlined cells = resolved by the first group. Click a row to filter.</p></div></div>
+      <div class="chart scroll" id="cHeat"></div>
+    </article>
+    <article class="panel s5" id="pTable">
+      <div class="ph"><div><h3>Group scorecard</h3><p>Kept = resolved by the group that received it · sort by any column · click a row to filter</p></div></div>
+      <div id="cTable"></div>
+    </article>
+  </section>
+
+  <section class="method">
+    <div><h4>Data</h4><p>UCI <i>Incident management process enriched event log</i> (Amaral, Fantinato &amp; Peres), CC BY 4.0. A real ServiceNow export; group and category names are anonymised in the source.</p></div>
+    <div><h4>Method</h4><p>Each incident's final audit record decides SLA, because <code>made_sla</code> flips during a ticket's life. Time-in-state is the gap between audit entries. Python and SQLite pipeline with 9 automated data-quality tests.</p></div>
+    <div><h4>Code &amp; Power BI model</h4><p>Pipeline, SQL marts, DAX measures and the full write-up are on <a href="https://github.com/harleysdata/portfolio/tree/main/01-servicenow-service-desk-analytics">GitHub</a>. This page computes every figure live in your browser from the incident data.</p></div>
+  </section>
+</main>
+
+<script src="dash.js"></script>
+<script>
+(function () {
+  "use strict";
+  var D, N, F = { pri: -1, cat: -1, fg: -1, band: -1 };
+  var BANDS = ["0", "1", "2", "3–4", "5+"];
+  function bandOf(r) { return r === 0 ? 0 : r === 1 ? 1 : r === 2 ? 2 : r <= 4 ? 3 : 4; }
+  var TTRB = [[0, 1, "< 1 h"], [1, 4, "1–4 h"], [4, 24, "4–24 h"], [24, 72, "1–3 d"], [72, 168, "3–7 d"], [168, 336, "1–2 wk"], [336, 672, "2–4 wk"], [672, 1e9, "4 wk +"]];
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Dash.fmt, C = Dash.C;
+
+  fetch("data/service_desk.json").then(function (r) { return r.json(); }).then(function (d) {
+    D = d; N = d.sla.length; D.band = d.reas.map(bandOf);
+    var L = d.lookups;
+    L.priority.forEach(function (p, i) { $("fPri").add(new Option(p, i)); });
+    L.category.forEach(function (p, i) { $("fCat").add(new Option(p, i)); });
+    L.group.forEach(function (p, i) { $("fFg").add(new Option(p, i)); });
+    ["fPri", "fCat", "fFg"].forEach(function (id) {
+      $(id).addEventListener("change", function () {
+        F[{ fPri: "pri", fCat: "cat", fFg: "fg" }[id]] = +this.value; render();
+      });
+    });
+    Dash.story($("story"), CHAPTERS);
+    Dash.onResize(function () { render(); });
+  });
+
+  function set(o) { F = Object.assign({ pri: -1, cat: -1, fg: -1, band: -1 }, o || {}); render(); }
+
+  // filter, optionally ignoring one dimension (so the chart that sets a filter still shows its siblings)
+  function idx(ignore) {
+    var out = [];
+    for (var i = 0; i < N; i++) {
+      if (F.pri >= 0 && D.pri[i] !== F.pri) continue;
+      if (ignore !== "cat" && F.cat >= 0 && D.cat[i] !== F.cat) continue;
+      if (ignore !== "fg" && F.fg >= 0 && D.fg[i] !== F.fg) continue;
+      if (ignore !== "band" && F.band >= 0 && D.band[i] !== F.band) continue;
+      out.push(i);
+    }
+    return out;
+  }
+  function sla(ix) { var s = 0; ix.forEach(function (i) { s += D.sla[i]; }); return ix.length ? s / ix.length : null; }
+
+  function render() {
+    Dash.hideTip();
+    $("fPri").value = F.pri; $("fCat").value = F.cat; $("fFg").value = F.fg;
+    var ix = idx();
+    kpis(ix); chips(); bandChart(); stateChart(ix); ttrChart(ix); catChart(); heatChart(); scoreTable();
+  }
+
+  function kpis(ix) {
+    var all = 0.6342, s = sla(ix), ttr = [], re = 0, wait = 0, open = 0;
+    ix.forEach(function (i) {
+      if (D.ttr[i] != null) ttr.push(D.ttr[i]);
+      if (D.reas[i] > 0) re++;
+      for (var k = 0; k < D.hrs.length; k++) open += D.hrs[k][i];
+      wait += D.hrs[2][i];
+    });
+    var med = Dash.median(ttr), filtered = ix.length !== N;
+    function delta(v, base, betterHigh) {
+      if (!filtered || v == null) return '<span class="d">All 24,918 incidents</span>';
+      var d = (v - base) * 100, good = betterHigh ? d >= 0 : d <= 0;
+      return '<span class="d ' + (Math.abs(d) < .5 ? "" : good ? "up" : "down") + '">' + (d >= 0 ? "+" : "") + d.toFixed(1) + " pts vs all</span>";
+    }
+    $("kpis").innerHTML = [
+      ["Incidents", fmt.int(ix.length), filtered ? '<span class="d">' + fmt.pct(ix.length / N) + " of all</span>" : '<span class="d">Opened mainly Mar–May 2016</span>'],
+      ["SLA met", s == null ? "–" : fmt.pct(s), delta(s, all, true)],
+      ["Median time to resolve", fmt.hrs(med), '<span class="d">Overall median 22.1 h</span>'],
+      ["Reassigned at least once", ix.length ? fmt.pct(re / ix.length) : "–", delta(ix.length ? re / ix.length : null, .4563, false)],
+      ["Open time waiting on requester", open ? fmt.pct(wait / open, 0) : "–", '<span class="d">of elapsed open hours</span>']
+    ].map(function (k) { return '<div class="kpi"><span class="k">' + k[0] + '</span><span class="v">' + k[1] + "</span>" + k[2] + "</div>"; }).join("");
+  }
+
+  function chips() {
+    var L = D.lookups, c = [];
+    if (F.pri >= 0) c.push(["pri", "Priority", L.priority[F.pri]]);
+    if (F.cat >= 0) c.push(["cat", "Category", L.category[F.cat]]);
+    if (F.fg >= 0) c.push(["fg", "First group", L.group[F.fg]]);
+    if (F.band >= 0) c.push(["band", "Reassigned", BANDS[F.band]]);
+    $("chips").innerHTML = c.map(function (x) { return '<button class="chip" data-k="' + x[0] + '" aria-label="Remove filter ' + x[1] + '"><b>' + x[1] + "</b> " + x[2] + " ✕</button>"; }).join("") +
+      (c.length ? '<button class="reset" type="button" id="resetAll">Clear all</button>' : "");
+    $("chips").querySelectorAll(".chip").forEach(function (b) {
+      b.addEventListener("click", function () { F[b.dataset.k] = -1; render(); });
+    });
+    if (c.length) $("resetAll").addEventListener("click", function () { set(); });
+  }
+
+  function bandChart() {
+    var ix = idx("band"), n = [0, 0, 0, 0, 0], s = [0, 0, 0, 0, 0];
+    ix.forEach(function (i) { n[D.band[i]]++; s[D.band[i]] += D.sla[i]; });
+    var data = BANDS.map(function (b, k) {
+      var v = n[k] >= 30 ? s[k] / n[k] : null;
+      return { label: b, value: v, on: F.band === k, color: k === 0 ? C.base : C.accent,
+        tip: "<b>Reassigned " + b + (b === "1" ? " time" : " times") + "</b><br>" + (v == null ? "Fewer than 30 tickets" : fmt.pct(v) + " met SLA") + "<br>" + fmt.int(n[k]) + " tickets" };
+    });
+    Dash.bars($("cBand"), data, { max: 1, format: function (v) { return fmt.pct(v, 0); }, tickFormat: function (v) { return Math.round(v * 100) + "%"; },
+      label: "SLA met by times reassigned: " + data.map(function (d) { return d.label + " " + (d.value == null ? "n/a" : fmt.pct(d.value, 0)); }).join(", "),
+      onClick: function (k) { F.band = F.band === k ? -1 : k; render(); } });
+    $("tBand").innerHTML = '<table class="t"><thead><tr><th>Reassigned</th><th class="n">Tickets</th><th class="n">SLA met</th></tr></thead><tbody>' +
+      data.map(function (d, k) { return "<tr><td>" + d.label + '</td><td class="n">' + fmt.int(n[k]) + '</td><td class="n">' + (d.value == null ? "–" : fmt.pct(d.value)) + "</td></tr>"; }).join("") + "</tbody></table>";
+  }
+
+  function stateChart(ix) {
+    var S = D.lookups.states, h = S.map(function () { return 0; }), tot = 0;
+    ix.forEach(function (i) { for (var k = 0; k < S.length; k++) { h[k] += D.hrs[k][i]; tot += D.hrs[k][i]; } });
+    var data = S.map(function (s, k) { return { label: s, value: tot ? h[k] / tot : 0, color: s === "Awaiting User Info" ? C.accent : C.base,
+      tip: "<b>" + s + "</b><br>" + fmt.pct(tot ? h[k] / tot : 0) + " of open hours<br>" + fmt.int(h[k]) + " hours" }; })
+      .sort(function (a, b) { return b.value - a.value; });
+    Dash.hbars($("cState"), data, { labelW: 150, rowH: 32, format: function (v) { return fmt.pct(v, 0); },
+      label: "Share of open hours by state: " + data.map(function (d) { return d.label + " " + fmt.pct(d.value, 0); }).join(", ") });
+  }
+
+  function ttrChart(ix) {
+    var n = TTRB.map(function () { return 0; }), m = n.slice();
+    ix.forEach(function (i) { var t = D.ttr[i]; if (t == null) return; for (var k = 0; k < TTRB.length; k++) if (t >= TTRB[k][0] && t < TTRB[k][1]) { n[k]++; m[k] += D.sla[i]; break; } });
+    Dash.bars($("cTtr"), TTRB.map(function (b, k) {
+      var r = n[k] ? m[k] / n[k] : 0;
+      return { label: b[2], value: n[k], color: r >= .5 ? C.base : C.accent, tip: "<b>Resolved in " + b[2] + "</b><br>" + fmt.int(n[k]) + " tickets<br>" + fmt.pct(r, 0) + " met SLA" };
+    }), { height: 220, format: function (v) { return v >= 1000 ? (v / 1000).toFixed(1) + "k" : fmt.int(v); }, label: "Tickets by time to resolve" });
+  }
+
+  function catChart() {
+    var ix = idx("cat"), L = D.lookups.category, n = L.map(function () { return 0; }), s = n.slice();
+    ix.forEach(function (i) { n[D.cat[i]]++; s[D.cat[i]] += D.sla[i]; });
+    var data = L.map(function (c, k) { return { k: k, label: c, value: n[k] ? s[k] / n[k] : 0, n: n[k] }; })
+      .filter(function (d) { return d.label !== "Other" && d.n >= 30; })
+      .sort(function (a, b) { return b.value - a.value; })
+      .map(function (d) { return { k: d.k, label: d.label, value: d.value, on: F.cat === d.k, color: d.value < .5 ? C.accent : C.base,
+        tip: "<b>" + d.label + "</b><br>" + fmt.pct(d.value, 0) + " met SLA<br>" + fmt.int(d.n) + " tickets" }; });
+    Dash.hbars($("cCat"), data, { labelW: 120, rowH: 24, max: 1, format: function (v) { return fmt.pct(v, 0); },
+      label: "SLA met by category", onClick: function (i) { var k = data[i].k; F.cat = F.cat === k ? -1 : k; render(); } });
+  }
+
+  function heatChart() {
+    var ix = idx("fg"), G = D.lookups.group, z = G.map(function () { return G.map(function () { return 0; }); });
+    ix.forEach(function (i) { if (D.rg[i] >= 0) z[D.fg[i]][D.rg[i]]++; });
+    var short = G.map(function (g) { return g.replace("Group ", "G"); });
+    Dash.heat($("cHeat"), short, short, z, {
+      diag: function (i, j) { return i === j && i < G.length - 1; },
+      tip: function (i, j, v) { var row = z[i].reduce(function (a, b) { return a + b; }, 0); return "<b>" + G[i] + " → " + G[j] + "</b><br>" + fmt.int(v) + " tickets" + (row ? " (" + fmt.pct(v / row, 0) + " of " + G[i] + "'s)" : ""); },
+      onRow: function (i) { F.fg = F.fg === i ? -1 : i; render(); },
+      label: "Heatmap of first assignment group against resolving group"
+    });
+  }
+
+  function scoreTable() {
+    var ix = idx("fg"), G = D.lookups.group, rows = G.map(function (g, k) { return { k: k, group: g, n: 0, known: 0, sla: 0, ftr: 0, re: 0, ttr: [] }; });
+    ix.forEach(function (i) { var r = rows[D.fg[i]]; r.n++; r.sla += D.sla[i]; if (D.rg[i] >= 0) { r.known++; r.ftr += D.fg[i] === D.rg[i] ? 1 : 0; } r.re += D.reas[i]; if (D.ttr[i] != null) r.ttr.push(D.ttr[i]); });
+    rows = rows.filter(function (r) { return r.n >= 20 && r.group !== "Other"; }).map(function (r) {
+      return { k: r.k, group: r.group, n: r.n, sla: r.sla / r.n, ftr: r.known ? r.ftr / r.known : 0, re: r.re / r.n, ttr: Dash.median(r.ttr) || 0 };
+    });
+    Dash.table($("cTable"), [
+      { key: "group", label: "Group", fmt: function (v) { return v.replace("Group ", "G"); } },
+      { key: "n", label: "Recv'd", num: 1, fmt: fmt.int },
+      { key: "sla", label: "SLA met", num: 1, fmt: function (v) { return fmt.pct(v, 0); }, bar: { max: 1, hi: function (r) { return r.sla < .5; } } },
+      { key: "ftr", label: "Kept", num: 1, fmt: function (v) { return fmt.pct(v, 0); } },
+      { key: "ttr", label: "Med. h", num: 1, fmt: function (v) { return v >= 100 ? Math.round(v) : v.toFixed(1); } }
+    ], rows, { sortKey: "n", onRow: function (r) { F.fg = F.fg === r.k ? -1 : r.k; render(); }, isOn: function (r) { return r.k === F.fg; } });
+  }
+
+  var G70 = function () { return D.lookups.group.indexOf("Group 70"); };
+  var CHAPTERS = [
+    { title: "The headline", focus: ["kpis"], apply: function () { set(); },
+      body: "<p>This desk met its SLA on <b>63% of 24,918 incidents</b>. Median time to resolve is 22 hours, but the slowest 10% take more than <b>380 hours</b>. Nearly half of all tickets were passed to another team at least once.</p><p class='so'>Question: where are the other 37% being lost, and what in ServiceNow can change?</p>" },
+    { title: "Every handoff costs SLA", focus: ["pBand"], apply: function () { set({ pri: 2 }); },
+      body: "<p>SLA falls from <b>80% to 14%</b> as tickets are reassigned. This view is filtered to <b>Moderate priority</b> (94% of tickets), so priority mix can't explain the drop. Two-thirds of all breaches involved a reassignment.</p><p class='so'>The biggest lever is getting the ticket to the right team the first time.</p>" },
+    { title: "Where tickets bounce", focus: ["pHeat", "pTable"], apply: function () { set(); },
+      body: "<p><b>Group 70</b> is the front line: it receives over half of all tickets and resolves most of them itself. The busiest loop is <b>Group 70 ↔ Group 20</b>, in both directions. Group 20 resolves only about 12% of the tickets it receives first. Click a row in the heatmap or scorecard to follow a group.</p><p class='so'>I wrote 11 assignment rules on the first 60% of the year and tested them on the rest: first-touch accuracy went from <b>51% to 82%</b> on the tickets they cover (138 fixed, 3 broken).</p>" },
+    { title: "Critical tickets can't win", focus: ["pBand", "kpis"], apply: function () { set({ pri: 0 }); },
+      body: "<p>Filtered to <b>Critical</b>: only <b>1.9%</b> meet SLA, and even tickets that were <b>never reassigned</b> almost all miss. When a target is missed 98% of the time, the problem is the target or the priority mapping, not the team.</p><p class='so'>Audit the P1/P2 SLA definitions before using SLA as a team KPI. Tickets with a confirmed priority meet SLA 67% of the time, against 51% unconfirmed.</p>" },
+    { title: "Waiting on the requester", focus: ["pState"], apply: function () { set(); },
+      body: "<p><b>30% of all open hours</b> are spent in <i>Awaiting User Info</i>. 5,464 incidents went there, with a median wait of <b>96 hours</b>. Whether or not the SLA clock pauses, the person who needs help waits the whole time.</p><p class='so'>Collect the right information at intake, with required fields by category. This is the starting point for my onboarding product case.</p>" },
+    { title: "What I'd change", focus: [], apply: function () { set(); },
+      body: "<p><b>1.</b> Deploy the 11 tested assignment rules and measure first-touch resolution for 8 weeks. <b>2.</b> Review the P1/P2 SLA definitions and require priority confirmation at triage. <b>3.</b> Add required intake fields per category in the service portal. <b>4.</b> Send a weekly bounce-back report to Groups 20 and 70.</p><p class='so'>Explore the filters yourself. Every number on this page is computed live from the incident data.</p>" }
+  ];
+})();
+</script>
+</body>
+</html>
