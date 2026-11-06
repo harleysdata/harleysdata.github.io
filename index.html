@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hira Hasan</title>
+<meta name="description" content="Hira Hasan: Product & Data Analyst in Mississauga, ON. SQL, Python, Power BI, UAT and Agile delivery. Ex-Scotiabank.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IM+Fell+English+SC&display=swap">
+<style>
+/* Layout: one dark page. Hero = copy (left) + The Magician tarot card (right); turning the card switches the hero between
+   Product & Data (upright) and Technical (turned). Sections below in a single 1080px column. Deliberate single dark look. */
+:root{
+  --night:#0b0a0b;      /* page ground */
+  --night-2:#151213;    /* raised surfaces */
+  --veil:#2b1d1f;       /* rules, borders */
+  --bone:#efe7e4;       /* main text */
+  --ash:#a8a0a0;        /* secondary text */
+  --gold:#d42a35;       /* the one accent: crimson */
+  --ember:#ff5a63;      /* lighter accent for the technical side */
+  --plate:#f4efed;      /* light plate behind charts */
+  --display:"Fraunces", Georgia, "Times New Roman", serif;
+  --body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --card:"IM Fell English SC", Georgia, serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--night);color:var(--bone);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--night)}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:2px}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.1;margin:0;text-wrap:balance}
+h2{font-size:clamp(30px,4.2vw,44px)}
+h3{font-size:22px}
+p{margin:0}
+
+/* Nav */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--night) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--veil)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px;flex-wrap:wrap}
+.mark{font-family:var(--display);font-size:20px;text-decoration:none;letter-spacing:.01em}
+.mark span{color:var(--gold)}
+nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+nav a{font-size:14px;text-decoration:none;color:var(--ash)}
+nav a:hover{color:var(--bone)}
+
+/* Hero */
+.hero{position:relative;overflow:hidden}
+.hero .wrap{position:relative;padding-block:88px 104px}
+.hero-copy{position:relative;z-index:1;max-width:640px;min-width:0}
+.magician{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:48px;width:min(320px,32vw);aspect-ratio:280/480;max-width:100%;perspective:1400px;opacity:.6;transform:rotate(6deg);z-index:0;cursor:pointer;transition:opacity .4s}
+.magician:hover,.magician:focus-visible{opacity:.95}
+.magician:focus-visible{outline:2px solid var(--gold);outline-offset:6px;border-radius:16px}
+.flip{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.6,.05,.25,1)}
+.magician.turned .flip{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;filter:drop-shadow(0 18px 30px rgba(0,0,0,.35))}
+.face.back{transform:rotateY(180deg)}
+.turn-hint{position:absolute;left:0;right:0;bottom:-30px;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ash)}
+.side{display:flex;flex-direction:column;gap:22px;animation:sideIn .6s ease both}
+@keyframes sideIn{from{opacity:.4;transform:translateY(8px)}to{opacity:1;transform:none}}
+.hero.tech .eyebrow,.hero.tech h1 em{color:var(--ember)}
+.hero h1{font-size:clamp(40px,6vw,72px);font-weight:400;letter-spacing:-.015em}
+.hero h1 em{font-style:italic;color:var(--gold);font-weight:300}
+.hero .lede{font-size:19px;color:var(--ash);max-width:34em}
+.hero .lede strong{color:var(--bone);font-weight:500}
+.ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}
+.btn{display:inline-block;font-family:var(--body);font-size:15px;font-weight:500;padding:12px 20px;border-radius:2px;text-decoration:none;border:1px solid var(--gold);cursor:pointer;background:none;color:var(--bone)}
+.btn.solid{background:var(--gold);color:#fff}
+.btn:hover{filter:brightness(1.08)}
+.creds{display:flex;flex-wrap:wrap;gap:8px 0;font-family:var(--mono);font-size:12px;color:var(--ash);letter-spacing:.04em;margin-top:8px}
+.creds span{padding-right:14px;margin-right:14px;border-right:1px solid var(--veil)}
+.creds span:last-child{border-right:none;margin-right:0;padding-right:0}
+.stack{display:flex;flex-wrap:wrap;gap:8px}
+.stack span{font-family:var(--mono);font-size:12.5px;padding:4px 10px;border:1px solid color-mix(in srgb,var(--ember) 45%,transparent);border-radius:2px;color:var(--bone)}
+
+/* Sections */
+section.block .wrap{padding-block:88px;display:flex;flex-direction:column;gap:40px}
+section.block + section.block .wrap{border-top:1px solid var(--veil)}
+.head{display:flex;flex-direction:column;gap:12px;max-width:44em}
+.head p{color:var(--ash)}
+.chip{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;padding:3px 8px;border:1px solid var(--veil);border-radius:2px;color:var(--ash)}
+
+/* Projects */
+.projects{display:flex;flex-direction:column}
+.project{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding-block:40px;border-bottom:1px solid var(--veil);align-items:start}
+.project:first-child{border-top:1px solid var(--veil)}
+.project > *{min-width:0}
+.project .num{font-family:var(--card);font-size:20px;color:var(--gold)}
+.project h3{font-size:28px;margin-top:6px}
+.project .problem{font-family:var(--display);font-style:italic;font-size:18px;line-height:1.4;color:var(--bone);margin-top:12px}
+.project .findings{margin:16px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:6px;color:var(--ash);font-size:16px}
+.project .findings strong{color:var(--bone);font-weight:500}
+.project .tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
+.project .repo{display:inline-block;margin-top:18px;font-family:var(--mono);font-size:13px;color:var(--ember);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--ember) 50%,transparent)}
+.project .repo:hover{color:var(--bone)}
+figure{margin:0;display:flex;flex-direction:column;gap:10px}
+figure img{display:block;width:100%;height:auto;border-radius:2px;background:var(--plate);padding:10px}
+figcaption{font-size:13px;color:var(--ash)}
+.result-table{width:100%;border-collapse:collapse;font-size:15px;font-variant-numeric:tabular-nums}
+.result-table th,.result-table td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--veil)}
+.result-table th{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ash);font-weight:500}
+.result-table td.n{text-align:right}
+.result-table th.n{text-align:right}
+.scroll{overflow-x:auto}
+.deliverables{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.deliverables div{padding:14px;border:1px solid var(--veil);border-radius:2px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.deliverables strong{font-family:var(--display);font-weight:500;font-size:17px}
+.deliverables span{font-size:14px;color:var(--ash)}
+.note{font-size:14px;color:var(--ash);max-width:44em}
+
+/* Skills */
+.skills{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.skill{display:flex;flex-direction:column;gap:10px;padding-top:18px;border-top:1px solid var(--gold);min-width:0}
+.skill .tag{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.skill ul{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.skill li{font-size:14px;padding:3px 9px;border:1px solid var(--veil);border-radius:2px}
+
+/* Experience */
+.about-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:56px}
+.about-grid > *{min-width:0}
+.about-text{display:flex;flex-direction:column;gap:16px;max-width:38em}
+.about-text p + p{color:var(--ash)}
+.timeline{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.timeline li{display:grid;grid-template-columns:132px 1fr;gap:16px;padding-block:16px;border-bottom:1px solid var(--veil)}
+.timeline li:first-child{border-top:1px solid var(--veil)}
+.timeline .yr{font-family:var(--mono);font-size:13px;color:var(--gold);font-variant-numeric:tabular-nums}
+.timeline .what{font-size:16px}
+.timeline .what small{display:block;color:var(--ash);font-size:14px;margin-top:2px}
+
+/* Certifications */
+.certs{display:grid;grid-template-columns:repeat(2,1fr);gap:0 40px}
+.cert{display:grid;grid-template-columns:1fr auto;gap:4px 16px;padding-block:16px;border-bottom:1px solid var(--veil);min-width:0}
+.cert strong{font-weight:500}
+.cert .when{font-family:var(--mono);font-size:12.5px;color:var(--ash);white-space:nowrap}
+.cert small{grid-column:1 / -1;color:var(--ash);font-size:14px}
+.cert.progress .when{color:var(--ember)}
+
+/* Placeholder for the creative studio */
+.later .wrap{padding-block:56px}
+.later-box{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:24px;border:1px dashed var(--veil);border-radius:2px}
+.later-box h3{font-family:var(--card);font-weight:400;font-size:24px;color:var(--ash)}
+.later-box p{font-size:14px;color:var(--ash)}
+
+/* Contact */
+.contact{display:flex;flex-direction:column;gap:20px;align-items:flex-start}
+.contact h2{font-size:clamp(34px,5vw,56px);font-weight:300}
+.email-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.email{font-family:var(--mono);font-size:17px;user-select:all;padding:10px 14px;border:1px solid var(--veil);border-radius:2px;overflow-wrap:anywhere}
+#copyNote{font-size:14px;color:var(--gold);min-height:1.4em}
+.links{display:flex;gap:20px;flex-wrap:wrap;font-size:15px}
+.links a{color:var(--ash)}
+.links a:hover{color:var(--bone)}
+
+footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--ash);border-top:1px solid var(--veil)}
+
+@media (max-width:860px){
+  .hero .wrap{padding-block:56px 72px}
+  .skills{grid-template-columns:1fr 1fr}
+  .about-grid,.project,.certs{grid-template-columns:1fr}
+  .project{gap:24px}
+  nav ul{gap:14px}
+}
+@media (max-width:900px){
+  .hero .wrap{display:flex;flex-direction:column}
+  .magician{position:relative;right:auto;top:auto;order:-1;width:220px;margin:0 auto 64px;opacity:1;transform:rotate(3deg)}
+}
+@media (max-width:520px){
+  .skills,.deliverables{grid-template-columns:1fr}
+  .timeline li{grid-template-columns:1fr;gap:2px}
+  section.block .wrap{padding-block:64px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .flip{transition:none}
+  .side{animation:none}
+}
+</style>
+
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="#top">Hira Hasan<span>.</span></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#certifications">Certifications</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy" aria-live="polite">
+        <div class="side side-front" id="sideFront">
+          <p class="eyebrow">Product &amp; Data Analyst · Mississauga, ON</p>
+          <h1>Clear data, <em>better products.</em></h1>
+          <p class="lede">I turn messy processes into clear requirements, build the reporting that shows leaders what's happening, and test systems before they reach users. <strong>Former Senior Program Analyst at Scotiabank</strong> and <strong>Product Manager Intern at Jones Autos.</strong></p>
+          <div class="ctas">
+            <a class="btn solid" href="#projects">See my projects</a>
+            <a class="btn" href="#contact">Get in touch</a>
+          </div>
+          <div class="creds" aria-label="Highlights">
+            <span>50,000+ contingent workers in compliance reporting</span>
+            <span>+15% trade-in lead conversions</span>
+            <span>−20% development rework</span>
+          </div>
+        </div>
+        <div class="side side-back" id="sideBack" hidden>
+          <p class="eyebrow">The technical side</p>
+          <h1>The tools on <em>my table.</em></h1>
+          <p class="lede">I write the SQL, clean the data in Python, model it in Power BI, and test the result before anyone relies on it. Every project below has its code on GitHub, and every number can be reproduced by running it.</p>
+          <div class="stack" aria-label="Technical tools">
+            <span>SQL</span><span>Python · pandas</span><span>Power BI · DAX</span><span>Excel · VBA</span><span>SciPy · A/B testing</span><span>UAT</span><span>SAP</span><span>Jira · Confluence</span><span>API integrations</span><span>AI evaluation</span>
+          </div>
+          <div class="ctas">
+            <a class="btn solid" href="https://github.com/harleysdata/portfolio" target="_blank" rel="noopener">View the code on GitHub</a>
+            <a class="btn" href="#projects">See the projects</a>
+          </div>
+        </div>
+      </div>
+      <div class="magician" id="card" role="button" tabindex="0" aria-pressed="false" aria-label="Tarot card I, The Magician. Upright: Product and Data. Press to turn the card and see the technical side.">
+        <div class="flip">
+<svg class="face front" viewBox="0 0 280 480" aria-hidden="true" focusable="false">
+<defs>
+<linearGradient id="fbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c0d10"/><stop offset="1" stop-color="#0c0a0b"/></linearGradient>
+<pattern id="fgrid" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0H0V16" fill="none" stroke="#d42a35" stroke-opacity=".08" stroke-width="1"/></pattern>
+</defs>
+<rect x="4" y="4" width="272" height="472" rx="16" fill="url(#fbg)" stroke="#d42a35" stroke-width="2"/>
+<rect x="18" y="18" width="244" height="444" rx="8" fill="url(#fgrid)" stroke="#d42a35" stroke-opacity=".55"/>
+<text x="140" y="56" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="28" fill="#d42a35">I</text>
+<g opacity=".9"><rect x="36" y="168" width="7" height="18" fill="#d42a35" fill-opacity=".55"/><rect x="46" y="158" width="7" height="28" fill="#d42a35" fill-opacity=".7"/><rect x="56" y="146" width="7" height="40" fill="#d42a35"/><line x1="33" y1="187" x2="67" y2="187" stroke="#d42a35" stroke-width="1.2"/></g>
+<g opacity=".9"><path d="M214 196l10-10l8 6l12-16" fill="none" stroke="#d42a35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="244" cy="176" r="2.5" fill="#d42a35"/></g>
+<path d="M120 72c0-10 18-10 20 0c2 10 20 10 20 0c0-10-18-10-20 0c-2 10-20 10-20 0z" fill="none" stroke="#d42a35" stroke-width="2.2"/>
+<path d="M112 128c-2-30 12-42 28-42s30 12 28 42l6 58c-22 10-46 10-68 0z" fill="#21171f"/>
+<path d="M110 170c8-10 20-14 30-14s22 4 30 14l8 134h-76z" fill="#1b191c"/>
+<path d="M131 157l9 34l9-34z" fill="#ece4d6"/>
+<path d="M131 157l-7 10l12 26l4-2z" fill="#2b272b"/><path d="M149 157l7 10l-12 26l-4-2z" fill="#2b272b"/>
+<circle cx="140" cy="214" r="2.2" fill="#d42a35"/><circle cx="140" cy="232" r="2.2" fill="#d42a35"/>
+<path d="M164 170l20-30l12-28" fill="none" stroke="#1b191c" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="197" cy="108" r="6" fill="#c08a6c"/>
+<line x1="198" y1="106" x2="210" y2="76" stroke="#d42a35" stroke-width="3.2" stroke-linecap="round"/>
+<path d="M212 64l2.2 5.4l5.6 1.2l-5.6 1.4l-2.2 5.4l-2.2-5.4l-5.6-1.4l5.6-1.2z" fill="#ffc9a8"/>
+<path d="M116 172l-12 44l-6 34" fill="none" stroke="#1b191c" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="97" cy="254" r="6" fill="#c08a6c"/>
+<line x1="96" y1="258" x2="94" y2="270" stroke="#c08a6c" stroke-width="3" stroke-linecap="round"/>
+<rect x="134" y="140" width="12" height="18" rx="4" fill="#c08a6c"/>
+<circle cx="140" cy="122" r="22" fill="#c08a6c"/>
+<path d="M118 120c0-22 14-30 22-30s24 6 24 30c-6-10-14-14-24-14s-17 4-22 14z" fill="#21171f"/>
+<ellipse cx="132" cy="125" rx="2.3" ry="3" fill="#1a1320"/><ellipse cx="148" cy="125" rx="2.3" ry="3" fill="#1a1320"/>
+<path d="M134 134q6 5 12 0" fill="none" stroke="#5a2a2a" stroke-width="1.8" stroke-linecap="round"/>
+<circle cx="127" cy="131" r="3" fill="#e08a7a" fill-opacity=".35"/><circle cx="153" cy="131" r="3" fill="#e08a7a" fill-opacity=".35"/>
+<rect x="34" y="296" width="212" height="12" rx="2" fill="#2a1b1d" stroke="#d42a35" stroke-width="1.5"/>
+<rect x="42" y="308" width="196" height="76" fill="#1a1113"/>
+<line x1="42" y1="322" x2="238" y2="322" stroke="#d42a35" stroke-opacity=".5"/>
+<rect x="56" y="258" width="58" height="36" rx="3" fill="#24191b" stroke="#d42a35" stroke-width="1.5"/>
+<rect x="64" y="278" width="6" height="10" fill="#d42a35"/><rect x="74" y="272" width="6" height="16" fill="#d42a35"/><rect x="84" y="266" width="6" height="22" fill="#d42a35"/><rect x="94" y="274" width="6" height="14" fill="#d42a35" fill-opacity=".6"/>
+<rect x="50" y="293" width="70" height="4" rx="2" fill="#45383a"/>
+<circle cx="160" cy="288" r="8" fill="#d42a35"/><path d="M160 282l1.7 3.6l3.9.4l-2.9 2.6l.9 3.8l-3.6-2.1l-3.6 2.1l.9-3.8l-2.9-2.6l3.9-.4z" fill="#1a1113"/>
+<rect x="190" y="276" width="18" height="20" rx="3" fill="#ece4d6"/><path d="M208 280c7 0 7 12 0 12" fill="none" stroke="#ece4d6" stroke-width="2.5"/>
+<path d="M195 270c0-4 4-4 4-8M202 270c0-4 4-4 4-8" fill="none" stroke="#a8a0a0" stroke-width="1.3" stroke-linecap="round"/>
+<text x="140" y="430" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="21" letter-spacing="1.5" fill="#d42a35">The Magician</text>
+<text x="140" y="450" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing="2" fill="#a8a0a0">HIRA HASAN · PRODUCT · DATA</text>
+</svg>
+
+<svg class="face back" viewBox="0 0 280 480" aria-hidden="true" focusable="false">
+<defs>
+<linearGradient id="bbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#240a0f"/><stop offset="1" stop-color="#0c0809"/></linearGradient>
+<pattern id="bdots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".9" fill="#ff5a63" fill-opacity=".18"/></pattern>
+</defs>
+<rect x="4" y="4" width="272" height="472" rx="16" fill="url(#bbg)" stroke="#ff5a63" stroke-width="2"/>
+<rect x="18" y="18" width="244" height="444" rx="8" fill="url(#bdots)" stroke="#ff5a63" stroke-opacity=".55"/>
+<text x="140" y="56" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="28" fill="#ff5a63">I</text>
+<!-- floating code: brackets and a query -->
+<text x="40" y="104" font-family="IBM Plex Mono, monospace" font-size="15" fill="#ff5a63" fill-opacity=".85">&lt;/&gt;</text>
+<text x="34" y="200" font-family="IBM Plex Mono, monospace" font-size="8.5" fill="#ffd9d9" fill-opacity=".75">SELECT</text>
+<text x="34" y="212" font-family="IBM Plex Mono, monospace" font-size="8.5" fill="#ffd9d9" fill-opacity=".55">GROUP BY</text>
+<text x="34" y="224" font-family="IBM Plex Mono, monospace" font-size="8.5" fill="#ffd9d9" fill-opacity=".4">HAVING</text>
+<!-- database cylinder -->
+<g transform="translate(220 176)"><ellipse cx="0" cy="0" rx="18" ry="6" fill="#2a0d12" stroke="#ff5a63" stroke-width="1.4"/><path d="M-18 0v26c0 3.3 8 6 18 6s18-2.7 18-6V0" fill="#1a0a0d" stroke="#ff5a63" stroke-width="1.4"/><path d="M-18 13c0 3.3 8 6 18 6s18-2.7 18-6" fill="none" stroke="#ff5a63" stroke-width="1.2" stroke-opacity=".7"/></g>
+<path d="M120 72c0-10 18-10 20 0c2 10 20 10 20 0c0-10-18-10-20 0c-2 10-20 10-20 0z" fill="none" stroke="#ff5a63" stroke-width="2.2"/>
+<!-- figure -->
+<path d="M112 128c-2-30 12-42 28-42s30 12 28 42l6 58c-22 10-46 10-68 0z" fill="#1a1218"/>
+<path d="M110 170c8-10 20-14 30-14s22 4 30 14l8 134h-76z" fill="#141215"/>
+<path d="M128 158l12 14l12-14" fill="none" stroke="#ff5a63" stroke-width="2"/>
+<path d="M164 170l20-30l12-28" fill="none" stroke="#141215" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="197" cy="108" r="6" fill="#c08a6c"/>
+<line x1="198" y1="106" x2="210" y2="76" stroke="#ff5a63" stroke-width="3.2" stroke-linecap="round"/>
+<path d="M212 62l2.6 6.2l6.4 1.4l-6.4 1.6l-2.6 6.2l-2.6-6.2l-6.4-1.6l6.4-1.4z" fill="#ffd9d9"/>
+<path d="M116 172l-12 44l-6 34" fill="none" stroke="#141215" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="97" cy="254" r="6" fill="#c08a6c"/>
+<rect x="134" y="140" width="12" height="18" rx="4" fill="#c08a6c"/>
+<circle cx="140" cy="122" r="22" fill="#c08a6c"/>
+<path d="M118 120c0-22 14-30 22-30s24 6 24 30c-6-10-14-14-24-14s-17 4-22 14z" fill="#1a1218"/>
+<!-- glasses -->
+<rect x="126" y="120" width="11" height="9" rx="3" fill="none" stroke="#ff5a63" stroke-width="1.4"/><rect x="143" y="120" width="11" height="9" rx="3" fill="none" stroke="#ff5a63" stroke-width="1.4"/><line x1="137" y1="124" x2="143" y2="124" stroke="#ff5a63" stroke-width="1.2"/>
+<ellipse cx="131.5" cy="125" rx="1.8" ry="2.4" fill="#1a1320"/><ellipse cx="148.5" cy="125" rx="1.8" ry="2.4" fill="#1a1320"/>
+<path d="M134 135q6 4 12 0" fill="none" stroke="#5a2a2a" stroke-width="1.8" stroke-linecap="round"/>
+<!-- table -->
+<rect x="34" y="296" width="212" height="12" rx="2" fill="#2a0f14" stroke="#ff5a63" stroke-width="1.5"/>
+<rect x="42" y="308" width="196" height="76" fill="#170a0d"/>
+<line x1="42" y1="322" x2="238" y2="322" stroke="#ff5a63" stroke-opacity=".5"/>
+<!-- terminal window -->
+<rect x="50" y="252" width="74" height="42" rx="3" fill="#120a0c" stroke="#ff5a63" stroke-width="1.5"/>
+<line x1="50" y1="260" x2="124" y2="260" stroke="#ff5a63" stroke-opacity=".6"/>
+<circle cx="56" cy="256" r="1.5" fill="#ff5a63"/><circle cx="61" cy="256" r="1.5" fill="#ff5a63" fill-opacity=".6"/>
+<text x="55" y="272" font-family="IBM Plex Mono, monospace" font-size="7" fill="#ffd9d9">&gt; python</text>
+<text x="55" y="283" font-family="IBM Plex Mono, monospace" font-size="7" fill="#ff5a63">✓ 15 tests</text>
+<rect x="46" y="293" width="82" height="4" rx="2" fill="#45383a"/>
+<!-- dashboard tile -->
+<rect x="150" y="262" width="38" height="32" rx="2" fill="#120a0c" stroke="#ff5a63" stroke-width="1.2"/>
+<path d="M155 286l7-8l6 4l9-11l6 4" fill="none" stroke="#ffd9d9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- checklist -->
+<rect x="198" y="262" width="30" height="32" rx="2" fill="#ece4d6"/>
+<path d="M203 271l2 2l4-4M203 280l2 2l4-4M203 289l2 2l4-4" fill="none" stroke="#a3121f" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="212" y1="271" x2="224" y2="271" stroke="#8a7f7f" stroke-width="1.2"/><line x1="212" y1="280" x2="224" y2="280" stroke="#8a7f7f" stroke-width="1.2"/><line x1="212" y1="289" x2="220" y2="289" stroke="#8a7f7f" stroke-width="1.2"/>
+<text x="140" y="430" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="21" letter-spacing="1.5" fill="#ff5a63">The Magician</text>
+<text x="140" y="450" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing="2" fill="#a8a0a0">SQL · PYTHON · POWER BI</text>
+</svg>
+        </div>
+        <span class="turn-hint" id="turnHint">Tap to see the technical side</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="projects">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Projects</p>
+        <h2>Four projects, all on GitHub</h2>
+        <p>Each one is modelled on a real kind of problem I've worked on, rebuilt with synthetic data so no employer data is shared. Every script runs with a fixed random seed, so anyone can reproduce the numbers.</p>
+      </div>
+      <div class="projects">
+
+        <article class="project">
+          <div>
+            <span class="num">I · Data analysis</span>
+            <h3>Contingent Workforce Compliance Analytics</h3>
+            <p class="problem">A bank uses thousands of contractors from dozens of staffing vendors. Who is non-compliant, and which vendors are the problem?</p>
+            <ul class="findings">
+              <li>Cleaned <strong>5,120 raw vendor records to 4,980</strong>: removed duplicates, standardized flags, filled missing rates.</li>
+              <li>Overall compliance is <strong>62.1%</strong>; incomplete training is the biggest gap (787 contractors).</li>
+              <li><strong>Four of the 10 worst vendors were rated Low risk</strong>, so the risk tiers needed to reflect real performance.</li>
+            </ul>
+            <div class="tools"><span class="chip">Python · pandas</span><span class="chip">SQL · window functions</span><span class="chip">Power BI · DAX</span></div>
+            <a class="repo" href="https://github.com/harleysdata/portfolio/tree/main/01-workforce-compliance-analytics" target="_blank" rel="noopener">View code and write-up →</a>
+          </div>
+          <figure>
+            <img src="assets/vendor_scorecard.png" alt="Bar chart of the 10 lowest-compliance vendors, coloured by risk tier. Westend Staffing is lowest at 32%." loading="lazy" width="1050" height="600">
+            <figcaption>The 10 lowest-compliance vendors, coloured by their assigned risk tier.</figcaption>
+          </figure>
+        </article>
+
+        <article class="project">
+          <div>
+            <span class="num">II · Statistics</span>
+            <h3>Dealership Inventory &amp; A/B Test Analysis</h3>
+            <p class="problem">Why do some cars sit on the lot, and did the new website lead form really work?</p>
+            <ul class="findings">
+              <li>Cars priced more than 6% above market took a median <strong>67 days</strong> to sell, versus <strong>51</strong> for cars under market.</li>
+              <li>The shorter lead form lifted mobile submissions from <strong>2.82% to 4.19%</strong> (p = 0.004); the desktop change wasn't significant.</li>
+              <li>Recommended shipping the new form while tracking the wide confidence interval before reporting a final lift.</li>
+            </ul>
+            <div class="tools"><span class="chip">Python</span><span class="chip">SciPy · z-test, Mann-Whitney</span><span class="chip">matplotlib</span></div>
+            <a class="repo" href="https://github.com/harleysdata/portfolio/tree/main/02-dealership-inventory-ab-test" target="_blank" rel="noopener">View code and write-up →</a>
+          </div>
+          <figure>
+            <img src="assets/ab_test.png" alt="Grouped bar chart of lead submission rates for variants A and B across All, Desktop and Mobile sessions." loading="lazy" width="975" height="540">
+            <figcaption>Lead submission rate by variant. The gain comes from mobile.</figcaption>
+          </figure>
+        </article>
+
+        <article class="project">
+          <div>
+            <span class="num">III · AI evaluation</span>
+            <h3>AI Answer Accuracy Evaluation</h3>
+            <p class="problem">People ask AI tools about their rights at work. How do you measure whether the answers are actually right?</p>
+            <ul class="findings">
+              <li>Built a test set of <strong>15 Ontario Employment Standards Act questions</strong>, each with required facts and common wrong answers.</li>
+              <li>The scorer grades each answer Correct, Partial or Incorrect and explains why.</li>
+              <li>It caught <strong>all 8 errors</strong> planted in a deliberately flawed answer set, including US overtime rules and outdated parental leave.</li>
+            </ul>
+            <div class="tools"><span class="chip">Python</span><span class="chip">JSON test sets</span><span class="chip">Rubric scoring</span></div>
+            <a class="repo" href="https://github.com/harleysdata/portfolio/tree/main/03-ai-answer-accuracy-eval" target="_blank" rel="noopener">View code and write-up →</a>
+          </div>
+          <div class="scroll">
+            <table class="result-table">
+              <caption class="note" style="caption-side:bottom;text-align:left;padding-top:10px">Sample results on two illustrative answer sets written to test the scorer.</caption>
+              <thead><tr><th>Answer set</th><th class="n">Correct</th><th class="n">Partial</th><th class="n">Incorrect</th></tr></thead>
+              <tbody>
+                <tr><td>Accurate set</td><td class="n">100%</td><td class="n">0%</td><td class="n">0%</td></tr>
+                <tr><td>Flawed set</td><td class="n">20%</td><td class="n">27%</td><td class="n">53%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="project">
+          <div>
+            <span class="num">IV · Product management</span>
+            <h3>Digital Trade-In Appraisal Tool</h3>
+            <p class="problem">Trade-in customers waited up to two days for a value and bought elsewhere. How do you take a fix from problem to launch plan?</p>
+            <ul class="findings">
+              <li>Wrote the PRD with goals, a guardrail metric and risks.</li>
+              <li>Scored the backlog with <strong>RICE</strong> in Python, factoring in dependencies, to build a two-release roadmap.</li>
+              <li>Kept the lowest-scoring item, the dashboard, because no success metric could be measured without it.</li>
+            </ul>
+            <div class="tools"><span class="chip">PRD</span><span class="chip">User stories</span><span class="chip">RICE</span><span class="chip">UAT</span></div>
+            <a class="repo" href="https://github.com/harleysdata/portfolio/tree/main/04-appraisal-tool-product-case-study" target="_blank" rel="noopener">Read the case study →</a>
+          </div>
+          <div class="deliverables">
+            <div><strong>PRD</strong><span>Problem, users, metrics, scope, risks</span></div>
+            <div><strong>7 user stories</strong><span>Given / When / Then acceptance criteria</span></div>
+            <div><strong>RICE roadmap</strong><span>10 items scored, sequenced by dependency</span></div>
+            <div><strong>UAT plan</strong><span>12 test cases, severity rules, go/no-go</span></div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="skills">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Skills</p>
+        <h2>What I work with</h2>
+      </div>
+      <div class="skills">
+        <div class="skill"><span class="tag">Data &amp; analytics</span><ul><li>SQL</li><li>Python</li><li>Power BI · DAX</li><li>Data modeling</li><li>Excel · VBA</li><li>IBM Cognos</li><li>Google Analytics</li><li>Data visualization</li></ul></div>
+        <div class="skill"><span class="tag">Product &amp; business analysis</span><ul><li>Requirements gathering</li><li>User stories</li><li>Technical specifications</li><li>Product roadmapping</li><li>RICE prioritization</li><li>A/B testing</li><li>Customer journey mapping</li></ul></div>
+        <div class="skill"><span class="tag">Testing &amp; delivery</span><ul><li>User Acceptance Testing</li><li>Agile · Scrum</li><li>Sprint planning</li><li>Backlog grooming</li><li>Change management</li><li>API integrations</li></ul></div>
+        <div class="skill"><span class="tag">Risk &amp; operations</span><ul><li>Contingent workforce management</li><li>Vendor management</li><li>Third-party risk management</li><li>Regulatory compliance</li><li>Process improvement</li></ul></div>
+        <div class="skill"><span class="tag">Tools &amp; platforms</span><ul><li>SAP</li><li>Jira</li><li>Confluence</li><li>Trello</li><li>Asana</li><li>HRIS</li><li>CRM</li></ul></div>
+        <div class="skill"><span class="tag">AI</span><ul><li>Prompt engineering</li><li>Generative AI</li><li>AI output evaluation</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="experience">
+    <div class="wrap">
+      <div class="about-grid">
+        <div class="head">
+          <p class="eyebrow">Experience</p>
+          <h2>6+ years across product, data and operations</h2>
+          <div class="about-text">
+            <p>At Scotiabank I managed compliance for a 50,000+ contingent workforce program and 30+ vendors, built the Power BI and SQL reporting leadership used to manage regulatory risk, and ran UAT on SAP releases.</p>
+            <p>At Jones Autos I led product work on a digital trade-in appraisal tool, ran A/B tests and planned sprints with a team of six. I'm now completing NPower Canada's Data Analytics &amp; AI program.</p>
+          </div>
+        </div>
+        <ol class="timeline">
+          <li><span class="yr">2026</span><span class="what">Product Manager Intern, Jones Autos<small>Appraisal tool launch (+15% trade-in conversions), A/B tests (+22% mobile engagement), RICE roadmap, API integrations</small></span></li>
+          <li><span class="yr">2022–2025</span><span class="what">Senior Program Analyst, Contingent Workforce Management, Scotiabank<small>Power BI and SQL compliance reporting for 50,000+ workers, SAP UAT, third-party risk across 30+ vendors</small></span></li>
+          <li><span class="yr">2021–2022</span><span class="what">People Operations Lead, CORE Resources (Scotiabank account)<small>HRIS reporting, system access for 50+ contingent workers</small></span></li>
+          <li><span class="yr">2019–2021</span><span class="what">Operations Manager, Filest CA<small>HR KPI tracking that cut absenteeism by 15%</small></span></li>
+          <li><span class="yr">2019–2020</span><span class="what">Operational Specialist, National Business Development &amp; Consulting<small>Compliance programs for 500+ employees; grievances resolved 35% faster</small></span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="certifications">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Education &amp; certifications</p>
+        <h2>Always learning</h2>
+      </div>
+      <div class="certs">
+        <div class="cert progress"><strong>Data Analytics &amp; AI Program, NPower Canada</strong><span class="when">To Jan 2027</span><small>Data analytics, generative AI, Agile delivery with Scrum and Kanban</small></div>
+        <div class="cert progress"><strong>IBM Data Analyst Professional Certificate</strong><span class="when">Dec 2026</span><small>Excel, data visualization and dashboards with Cognos (3 courses completed)</small></div>
+        <div class="cert"><strong>Google Prompting Essentials</strong><span class="when">Oct 2026</span><small>Prompt design, AI-assisted data analysis</small></div>
+        <div class="cert"><strong>Foundations of Project Management, Google</strong><span class="when">Oct 2026</span><small>Project lifecycle, Agile and Waterfall</small></div>
+        <div class="cert"><strong>Product Management Certification, BrainStation</strong><span class="when">Aug 2024</span><small>Data-informed product design, SDLC, technical roadmapping</small></div>
+        <div class="cert"><strong>Business Analysis Fundamentals, Microsoft</strong><span class="when">Aug 2021</span><small>Requirements and business analysis practice</small></div>
+        <div class="cert"><strong>Honours Bachelor of Human Resource Management, York University</strong><span class="when">2021</span><small>Quantitative analysis and business statistics</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block later" id="studio" aria-label="Harley is Sp00ky, coming later">
+    <div class="wrap">
+      <div class="later-box">
+        <h3>Harley is Sp00ky</h3>
+        <p>Creative studio and shop. Coming later.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="contact">
+    <div class="wrap">
+      <div class="contact">
+        <p class="eyebrow">Contact</p>
+        <h2>Let's talk.</h2>
+        <p style="color:var(--ash);max-width:36em">I'm open to Product Analyst, Business Analyst, Data Analyst, Product Owner and Program Analyst roles in Toronto and the GTA.</p>
+        <div class="email-row">
+          <span class="email" id="email">hasanhira10@gmail.com</span>
+          <button class="btn" type="button" id="copyBtn">Copy email</button>
+        </div>
+        <p id="copyNote" aria-live="polite"></p>
+        <div class="links">
+          <a href="https://www.linkedin.com/in/hirahasanq/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://github.com/harleysdata" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Hira Hasan · Mississauga, ON</span>
+    <span>Upright and turned, on purpose.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var card=document.getElementById('card'), hint=document.getElementById('turnHint');
+  function turn(){
+    var t=card.classList.toggle('turned');
+    card.setAttribute('aria-pressed', t ? 'true' : 'false');
+    card.setAttribute('aria-label', t ? 'Tarot card I, The Magician. Turned: the technical side. Press to turn it back.' : 'Tarot card I, The Magician. Upright: Product and Data. Press to turn the card and see the technical side.');
+    hint.textContent = t ? 'Tap to turn it back' : 'Tap to see the technical side';
+    document.getElementById('sideFront').hidden = t;
+    document.getElementById('sideBack').hidden = !t;
+    document.querySelector('.hero').classList.toggle('tech', t);
+  }
+  card.addEventListener('click', turn);
+  card.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); turn(); } });
+
+  var btn=document.getElementById('copyBtn'), note=document.getElementById('copyNote'), email=document.getElementById('email');
+  btn.addEventListener('click', function(){
+    var text=email.textContent.trim();
+    function fallback(){
+      var r=document.createRange(); r.selectNodeContents(email);
+      var s=window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      note.textContent='Email selected. Press Ctrl+C or Cmd+C to copy.';
+    }
+    try{ navigator.clipboard.writeText(text).then(function(){ note.textContent='Copied.'; }, fallback); }
+    catch(e){ fallback(); }
+  });
+})();
+</script>
+
+</body>
+</html>
