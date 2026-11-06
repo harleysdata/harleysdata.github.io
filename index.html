@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Hira Hasan</title>
-<meta name="description" content="Hira Hasan: Product & Data Analyst in Mississauga, ON. SQL, Python, Power BI, UAT and Agile delivery. Ex-Scotiabank.">
+<meta name="description" content="Hira Hasan: Product & Data Analyst in Mississauga, ON. SQL, Python, Power BI, ServiceNow and SAP analytics. Ex-Scotiabank.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IM+Fell+English+SC&display=swap">
 <style>
@@ -156,6 +156,45 @@ figcaption{font-size:13px;color:var(--ash)}
 
 footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--ash);border-top:1px solid var(--veil)}
 
+
+/* Interactive charts (no libraries) */
+.viz{display:flex;flex-direction:column;gap:14px;padding:20px;border:1px solid var(--veil);border-radius:2px;background:var(--night-2);min-width:0}
+.viz-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.viz-title{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ash)}
+.seg{display:flex;border:1px solid var(--veil);border-radius:2px;overflow:hidden}
+.seg button{font:500 12.5px var(--body);padding:6px 10px;background:none;border:0;color:var(--ash);cursor:pointer}
+.seg button+button{border-left:1px solid var(--veil)}
+.seg button[aria-pressed="true"]{background:var(--veil);color:var(--bone)}
+.bars{display:flex;align-items:flex-end;gap:2px;height:200px;border-bottom:1px solid var(--ash);position:relative}
+.bar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;position:relative;cursor:default;min-width:0}
+.bar i{display:block;width:72%;background:var(--ash);border-radius:4px 4px 0 0;transition:height .45s cubic-bezier(.3,.7,.3,1)}
+.bar.hl i{background:var(--gold)}
+.bar .v{font-size:13px;font-variant-numeric:tabular-nums;color:var(--bone);margin-bottom:4px}
+.bar .x{position:absolute;bottom:-24px;font-family:var(--mono);font-size:12px;color:var(--ash)}
+.bars{margin-bottom:24px}
+.bars.wide{flex-direction:column;align-items:stretch;height:auto;border-bottom:0;border-left:1px solid var(--ash);gap:6px;margin-bottom:0}
+.hbar{display:grid;grid-template-columns:minmax(0,1fr);gap:3px;padding-left:10px}
+.hbar .lbl{font-size:13.5px;color:var(--bone)}
+.hbar .track{display:flex;align-items:center;gap:8px}
+.hbar i{display:block;height:12px;background:var(--ash);border-radius:0 4px 4px 0;transition:width .45s cubic-bezier(.3,.7,.3,1);min-width:2px}
+.hbar.hl i{background:var(--gold)}
+.hbar .v{font-size:12.5px;color:var(--ash);font-variant-numeric:tabular-nums;white-space:nowrap}
+.bar:hover i,.hbar:hover i{filter:brightness(1.25)}
+.tip{position:fixed;pointer-events:none;z-index:20;background:var(--bone);color:var(--night);font-size:13px;padding:6px 9px;border-radius:2px;box-shadow:0 6px 18px rgba(0,0,0,.4);opacity:0;transition:opacity .12s;max-width:240px}
+.key{display:inline-block;width:10px;height:10px;background:var(--gold);border-radius:2px;margin-right:4px;vertical-align:-1px}
+.kpis{display:flex;flex-wrap:wrap;gap:12px}
+.kpis div{flex:1 1 120px;display:flex;flex-direction:column;gap:2px;padding-top:10px;border-top:1px solid var(--veil)}
+.kpis b{font-family:var(--display);font-weight:500;font-size:26px;font-variant-numeric:tabular-nums}
+.kpis span{font-size:13px;color:var(--ash)}
+.slider{display:flex;flex-direction:column;gap:10px;font-size:15px}
+.slider b{color:var(--ember);font-variant-numeric:tabular-nums}
+.slider input{width:100%;accent-color:var(--gold)}
+.sev{font-family:var(--mono);font-size:11.5px;padding:2px 7px;border-radius:2px;border:1px solid;white-space:nowrap}
+.sev::before{content:"● ";font-size:9px}
+.sev.crit{color:#ff6b73;border-color:#6b232a}.sev.high{color:#f0a35c;border-color:#5e3d1f}
+.sev.med{color:#e3cf6e;border-color:#565023}.sev.low{color:var(--ash);border-color:var(--veil)}
+@media (prefers-reduced-motion:reduce){.bar i,.hbar i{transition:none}}
+
 @media (max-width:860px){
   .hero .wrap{padding-block:56px 72px}
   .skills{grid-template-columns:1fr 1fr}
@@ -178,10 +217,10 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
   .side{animation:none}
 }
 </style>
-
 <style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
+
 <header class="top">
   <div class="wrap">
     <a class="mark" href="#top">Hira Hasan<span>.</span></a>
@@ -218,9 +257,9 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
         <div class="side side-back" id="sideBack" hidden>
           <p class="eyebrow">The technical side</p>
           <h1>The tools on <em>my table.</em></h1>
-          <p class="lede">I write the SQL, clean the data in Python, model it in Power BI, and test the result before anyone relies on it. Every project below has its code on GitHub, and every number can be reproduced by running it.</p>
+          <p class="lede">I write the SQL, clean the data in Python, model it in Power BI, and test the result before anyone relies on it. The projects below run on real ServiceNow and SAP logs, and every number can be reproduced by running the code on GitHub.</p>
           <div class="stack" aria-label="Technical tools">
-            <span>SQL</span><span>Python · pandas</span><span>Power BI · DAX</span><span>Excel · VBA</span><span>SciPy · A/B testing</span><span>UAT</span><span>SAP</span><span>Jira · Confluence</span><span>API integrations</span><span>AI evaluation</span>
+            <span>SQL</span><span>Python · pandas</span><span>Power BI · DAX</span><span>ServiceNow</span><span>SAP Fieldglass</span><span>SuccessFactors EC</span><span>Process mining</span><span>Experiment design</span><span>pytest</span><span>Jira</span><span>AI evaluation</span>
           </div>
           <div class="ctas">
             <a class="btn solid" href="https://github.com/harleysdata/portfolio" target="_blank" rel="noopener">View the code on GitHub</a>
@@ -336,69 +375,89 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
     <div class="wrap">
       <div class="head">
         <p class="eyebrow">Projects</p>
-        <h2>Four projects, all on GitHub</h2>
-        <p>Each one is modelled on a real kind of problem I've worked on, rebuilt with synthetic data so no employer data is shared. Every script runs with a fixed random seed, so anyone can reproduce the numbers.</p>
+        <h2>Real enterprise data, worked end to end</h2>
+        <p>Two projects use real, public logs from ServiceNow and SAP: 1.7 million events in all. One designs the integration between the three systems I used at Scotiabank, one turns the findings into a product plan, and one evaluates AI answers. Every number on this page comes from code you can run.</p>
       </div>
       <div class="projects">
 
         <article class="project">
           <div>
-            <span class="num">I · Data analysis</span>
-            <h3>Contingent Workforce Compliance Analytics</h3>
-            <p class="problem">A bank uses thousands of contractors from dozens of staffing vendors. Who is non-compliant, and which vendors are the problem?</p>
+            <span class="num">I · Service desk analytics</span>
+            <h3>Why a third of ServiceNow tickets miss SLA</h3>
+            <p class="problem">A real ServiceNow audit log: 141,712 events, 24,918 incidents. Where is SLA being lost, and what can change in the tool to fix it?</p>
             <ul class="findings">
-              <li>Cleaned <strong>5,120 raw vendor records to 4,980</strong>: removed duplicates, standardized flags, filled missing rates.</li>
-              <li>Overall compliance is <strong>62.1%</strong>; incomplete training is the biggest gap (787 contractors).</li>
-              <li><strong>Four of the 10 worst vendors were rated Low risk</strong>, so the risk tiers needed to reflect real performance.</li>
+              <li>SLA falls from <strong>78% to 14%</strong> as tickets are reassigned, and the drop holds within the same priority. Two-thirds of breaches involved a reassignment.</li>
+              <li>Built 11 assignment rules on the first 60% of the year and tested them on the rest: first-touch accuracy rose from <strong>51% to 82%</strong> on the tickets they cover, with 138 fixed and 3 broken.</li>
+              <li>Critical tickets meet SLA <strong>1.9%</strong> of the time, even with no handoffs. The SLA definitions need fixing before SLA is used as a team KPI.</li>
             </ul>
-            <div class="tools"><span class="chip">Python · pandas</span><span class="chip">SQL · window functions</span><span class="chip">Power BI · DAX</span></div>
-            <a class="repo" href="https://github.com/harleysdata/portfolio/tree/main/01-workforce-compliance-analytics" target="_blank" rel="noopener">View code and write-up →</a>
+            <div class="tools"><span class="chip">Python · pandas</span><span class="chip">SQL · SQLite marts</span><span class="chip">Power BI · DAX</span><span class="chip">pytest</span></div>
+            <a class="repo" href="https://github.com/harleysdata/portfolio/tree/main/01-servicenow-service-desk-analytics" target="_blank" rel="noopener">Code and full write-up →</a>
           </div>
-          <figure>
-            <img src="assets/vendor_scorecard.png" alt="Bar chart of the 10 lowest-compliance vendors, coloured by risk tier. Westend Staffing is lowest at 32%." loading="lazy" width="1050" height="600">
-            <figcaption>The 10 lowest-compliance vendors, coloured by their assigned risk tier.</figcaption>
-          </figure>
+          <div class="viz">
+            <div class="viz-head">
+              <p class="viz-title">SLA met, by times reassigned</p>
+              <div class="seg" role="group" aria-label="Priority filter" data-chart="c1">
+                <button type="button" aria-pressed="true" data-k="all">All tickets</button>
+                <button type="button" aria-pressed="false" data-k="mod">Moderate only</button>
+                <button type="button" aria-pressed="false" data-k="low">Low only</button>
+              </div>
+            </div>
+            <div class="bars" id="c1" role="img"></div>
+            <div class="kpis"><div><b>63.4%</b><span>SLA met overall</span></div><div><b>45.6%</b><span>tickets reassigned</span></div><div><b>30%</b><span>open time waiting on the user</span></div></div>
+          </div>
         </article>
 
         <article class="project">
           <div>
-            <span class="num">II · Statistics</span>
-            <h3>Dealership Inventory &amp; A/B Test Analysis</h3>
-            <p class="problem">Why do some cars sit on the lot, and did the new website lead form really work?</p>
+            <span class="num">II · Controls &amp; vendor risk</span>
+            <h3>SAP procure-to-pay control testing</h3>
+            <p class="problem">A real SAP purchase-to-pay log: 1.6M events, 251,734 PO lines, €997M. Which controls fail, how much spend do they touch, and which vendors come first?</p>
             <ul class="findings">
-              <li>Cars priced more than 6% above market took a median <strong>67 days</strong> to sell, versus <strong>51</strong> for cars under market.</li>
-              <li>The shorter lead form lifted mobile submissions from <strong>2.82% to 4.19%</strong> (p = 0.004); the desktop change wasn't significant.</li>
-              <li>Recommended shipping the new form while tracking the wide confidence interval before reporting a final lift.</li>
+              <li><strong>8,887 PO lines (€108.5M)</strong> had a high-risk exception: the PO was raised after the invoice, payment went out without a goods receipt, or the same person ordered and received.</li>
+              <li>When an invoice is posted before the goods arrive, <strong>97%</strong> hit a payment block. 88% of lines are set up to allow that, so the configuration itself is creating AP rework.</li>
+              <li>Scored 307 vendors with SQL percentile ranks: <strong>17 High-risk vendors</strong> hold €82.9M of spend.</li>
             </ul>
-            <div class="tools"><span class="chip">Python</span><span class="chip">SciPy · z-test, Mann-Whitney</span><span class="chip">matplotlib</span></div>
-            <a class="repo" href="https://github.com/harleysdata/portfolio/tree/main/02-dealership-inventory-ab-test" target="_blank" rel="noopener">View code and write-up →</a>
+            <div class="tools"><span class="chip">Process mining</span><span class="chip">SQL · window functions</span><span class="chip">Streaming XML parser</span><span class="chip">Power BI · DAX</span></div>
+            <a class="repo" href="https://github.com/harleysdata/portfolio/tree/main/02-sap-procure-to-pay-compliance" target="_blank" rel="noopener">Code and full write-up →</a>
           </div>
-          <figure>
-            <img src="assets/ab_test.png" alt="Grouped bar chart of lead submission rates for variants A and B across All, Desktop and Mobile sessions." loading="lazy" width="975" height="540">
-            <figcaption>Lead submission rate by variant. The gain comes from mobile.</figcaption>
-          </figure>
+          <div class="viz">
+            <div class="viz-head">
+              <p class="viz-title">Control exceptions</p>
+              <div class="seg" role="group" aria-label="Measure" data-chart="c2">
+                <button type="button" aria-pressed="true" data-k="lines">PO lines</button>
+                <button type="button" aria-pressed="false" data-k="value">PO value</button>
+              </div>
+            </div>
+            <div class="bars wide" id="c2" role="img"></div>
+            <p class="note"><span class="key"></span> High-risk controls. Value is the PO value of affected lines, not the amount lost.</p>
+          </div>
         </article>
 
         <article class="project">
           <div>
-            <span class="num">III · AI evaluation</span>
-            <h3>AI Answer Accuracy Evaluation</h3>
-            <p class="problem">People ask AI tools about their rights at work. How do you measure whether the answers are actually right?</p>
+            <span class="num">III · Systems integration</span>
+            <h3>Fieldglass → Employee Central → ServiceNow</h3>
+            <p class="problem">A contractor's details live in three systems. How do you keep them in step, and prove it's working?</p>
             <ul class="findings">
-              <li>Built a test set of <strong>15 Ontario Employment Standards Act questions</strong>, each with required facts and common wrong answers.</li>
-              <li>The scorer grades each answer Correct, Partial or Incorrect and explains why.</li>
-              <li>It caught <strong>all 8 errors</strong> planted in a deliberately flawed answer set, including US overtime rules and outdated parental leave.</li>
+              <li>Designed the flow with <strong>one owner per fact</strong>: Fieldglass owns the engagement, Employee Central the person, ServiceNow the access. Includes a 14-field mapping, sequence diagrams and a controls matrix.</li>
+              <li>Built a three-way reconciliation with <strong>7 checks</strong>, each with a severity and an owning team.</li>
+              <li>On sample extracts with 591 planted defects it found <strong>591 of 591</strong>, with no false alarms.</li>
             </ul>
-            <div class="tools"><span class="chip">Python</span><span class="chip">JSON test sets</span><span class="chip">Rubric scoring</span></div>
-            <a class="repo" href="https://github.com/harleysdata/portfolio/tree/main/03-ai-answer-accuracy-eval" target="_blank" rel="noopener">View code and write-up →</a>
+            <div class="tools"><span class="chip">SAP Fieldglass</span><span class="chip">SuccessFactors EC</span><span class="chip">ServiceNow HRSD</span><span class="chip">Python · pytest</span></div>
+            <a class="repo" href="https://github.com/harleysdata/portfolio/tree/main/03-contingent-workforce-integration" target="_blank" rel="noopener">Design and code →</a>
           </div>
           <div class="scroll">
             <table class="result-table">
-              <caption class="note" style="caption-side:bottom;text-align:left;padding-top:10px">Sample results on two illustrative answer sets written to test the scorer.</caption>
-              <thead><tr><th>Answer set</th><th class="n">Correct</th><th class="n">Partial</th><th class="n">Incorrect</th></tr></thead>
+              <caption class="note" style="caption-side:bottom;text-align:left;padding-top:10px">Results on sample extracts for 3,000 contractors. Defect rates are planted, not measured from an employer.</caption>
+              <thead><tr><th>Severity</th><th>Check</th><th class="n">Found</th></tr></thead>
               <tbody>
-                <tr><td>Accurate set</td><td class="n">100%</td><td class="n">0%</td><td class="n">0%</td></tr>
-                <tr><td>Flawed set</td><td class="n">20%</td><td class="n">27%</td><td class="n">53%</td></tr>
+                <tr><td><span class="sev crit">Critical</span></td><td>Contract ended, account still active</td><td class="n">54</td></tr>
+                <tr><td><span class="sev crit">Critical</span></td><td>Account with no work order</td><td class="n">33</td></tr>
+                <tr><td><span class="sev high">High</span></td><td>Contract ended, HR record still active</td><td class="n">40</td></tr>
+                <tr><td><span class="sev high">High</span></td><td>Active work order, no HR record</td><td class="n">15</td></tr>
+                <tr><td><span class="sev med">Medium</span></td><td>Extension not synced to HR</td><td class="n">129</td></tr>
+                <tr><td><span class="sev med">Medium</span></td><td>Cost centre mismatch</td><td class="n">86</td></tr>
+                <tr><td><span class="sev low">Low</span></td><td>Onboarding finished after start date</td><td class="n">234</td></tr>
               </tbody>
             </table>
           </div>
@@ -407,21 +466,50 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
         <article class="project">
           <div>
             <span class="num">IV · Product management</span>
-            <h3>Digital Trade-In Appraisal Tool</h3>
-            <p class="problem">Trade-in customers waited up to two days for a value and bought elsewhere. How do you take a fix from problem to launch plan?</p>
+            <h3>Contractor Onboarding Hub</h3>
+            <p class="problem">The analysis found the problems. What should a product team build first, and how would it know it worked?</p>
             <ul class="findings">
-              <li>Wrote the PRD with goals, a guardrail metric and risks.</li>
-              <li>Scored the backlog with <strong>RICE</strong> in Python, factoring in dependencies, to build a two-release roadmap.</li>
-              <li>Kept the lowest-scoring item, the dashboard, because no success metric could be measured without it.</li>
+              <li>PRD with a North Star (contractors ready on day one), three driver metrics and two guardrails.</li>
+              <li>A <strong>Jira-ready backlog</strong> of 4 epics and 10 stories, scored with RICE. Two calls go against the score, and the PRD explains each one.</li>
+              <li>Sized the intake experiment with a power analysis adjusted for clustering. Testing for a 5-point gain would take 7.6 months, so I recommended 7 points.</li>
             </ul>
-            <div class="tools"><span class="chip">PRD</span><span class="chip">User stories</span><span class="chip">RICE</span><span class="chip">UAT</span></div>
-            <a class="repo" href="https://github.com/harleysdata/portfolio/tree/main/04-appraisal-tool-product-case-study" target="_blank" rel="noopener">Read the case study →</a>
+            <div class="tools"><span class="chip">PRD</span><span class="chip">Jira · user stories</span><span class="chip">RICE</span><span class="chip">Experiment design</span></div>
+            <a class="repo" href="https://github.com/harleysdata/portfolio/tree/main/04-contractor-onboarding-product-case" target="_blank" rel="noopener">Read the case study →</a>
           </div>
-          <div class="deliverables">
-            <div><strong>PRD</strong><span>Problem, users, metrics, scope, risks</span></div>
-            <div><strong>7 user stories</strong><span>Given / When / Then acceptance criteria</span></div>
-            <div><strong>RICE roadmap</strong><span>10 items scored, sequenced by dependency</span></div>
-            <div><strong>UAT plan</strong><span>12 test cases, severity rules, go/no-go</span></div>
+          <div class="viz">
+            <p class="viz-title">Try it: how big a change should the test detect?</p>
+            <label class="slider"><span>Follow-up rate drops from 22% to <b id="pT">17</b>%</span>
+              <input type="range" id="eff" min="3" max="10" step="1" value="5" aria-describedby="sizeOut"></label>
+            <div class="kpis" id="sizeOut" aria-live="polite">
+              <div><b id="nArm">1,133</b><span>requests per arm</span></div>
+              <div><b id="months">7.6</b><span>months at ~300 a month</span></div>
+            </div>
+            <p class="note">Two-sided test, α = 0.05, power 0.8, with a design effect of 1.15 because hiring managers, not requests, are randomised.</p>
+          </div>
+        </article>
+
+        <article class="project">
+          <div>
+            <span class="num">V · AI evaluation</span>
+            <h3>AI Answer Accuracy Evaluation</h3>
+            <p class="problem">People ask AI tools about their rights at work. How do you measure whether the answers are right?</p>
+            <ul class="findings">
+              <li>A test set of <strong>15 Ontario Employment Standards Act questions</strong>, each with required facts and common wrong answers.</li>
+              <li>The scorer grades each answer Correct, Partial or Incorrect and explains why.</li>
+              <li>It caught <strong>all 8 errors</strong> planted in a flawed answer set, including US overtime rules and outdated parental leave.</li>
+            </ul>
+            <div class="tools"><span class="chip">Python</span><span class="chip">JSON test sets</span><span class="chip">Rubric scoring</span></div>
+            <a class="repo" href="https://github.com/harleysdata/portfolio/tree/main/05-ai-answer-accuracy-eval" target="_blank" rel="noopener">Code and write-up →</a>
+          </div>
+          <div class="scroll">
+            <table class="result-table">
+              <caption class="note" style="caption-side:bottom;text-align:left;padding-top:10px">Results on two answer sets written to test the scorer.</caption>
+              <thead><tr><th>Answer set</th><th class="n">Correct</th><th class="n">Partial</th><th class="n">Incorrect</th></tr></thead>
+              <tbody>
+                <tr><td>Accurate set</td><td class="n">100%</td><td class="n">0%</td><td class="n">0%</td></tr>
+                <tr><td>Flawed set</td><td class="n">20%</td><td class="n">27%</td><td class="n">53%</td></tr>
+              </tbody>
+            </table>
           </div>
         </article>
 
@@ -436,11 +524,11 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
         <h2>What I work with</h2>
       </div>
       <div class="skills">
-        <div class="skill"><span class="tag">Data &amp; analytics</span><ul><li>SQL</li><li>Python</li><li>Power BI · DAX</li><li>Data modeling</li><li>Excel · VBA</li><li>IBM Cognos</li><li>Google Analytics</li><li>Data visualization</li></ul></div>
+        <div class="skill"><span class="tag">Data &amp; analytics</span><ul><li>SQL</li><li>Python</li><li>Power BI · DAX</li><li>Data modeling</li><li>Process mining</li><li>Excel · VBA</li><li>IBM Cognos</li><li>Google Analytics</li><li>Data visualization</li></ul></div>
         <div class="skill"><span class="tag">Product &amp; business analysis</span><ul><li>Requirements gathering</li><li>User stories</li><li>Technical specifications</li><li>Product roadmapping</li><li>RICE prioritization</li><li>A/B testing</li><li>Customer journey mapping</li></ul></div>
         <div class="skill"><span class="tag">Testing &amp; delivery</span><ul><li>User Acceptance Testing</li><li>Agile · Scrum</li><li>Sprint planning</li><li>Backlog grooming</li><li>Change management</li><li>API integrations</li></ul></div>
         <div class="skill"><span class="tag">Risk &amp; operations</span><ul><li>Contingent workforce management</li><li>Vendor management</li><li>Third-party risk management</li><li>Regulatory compliance</li><li>Process improvement</li></ul></div>
-        <div class="skill"><span class="tag">Tools &amp; platforms</span><ul><li>SAP</li><li>Jira</li><li>Confluence</li><li>Trello</li><li>Asana</li><li>HRIS</li><li>CRM</li></ul></div>
+        <div class="skill"><span class="tag">Enterprise systems</span><ul><li>ServiceNow (ITSM, HRSD)</li><li>SAP Fieldglass</li><li>SAP SuccessFactors · Employee Central</li><li>SAP purchasing (P2P)</li><li>Jira</li><li>Confluence</li></ul></div>
         <div class="skill"><span class="tag">AI</span><ul><li>Prompt engineering</li><li>Generative AI</li><li>AI output evaluation</li></ul></div>
       </div>
     </div>
@@ -548,6 +636,68 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
     try{ navigator.clipboard.writeText(text).then(function(){ note.textContent='Copied.'; }, fallback); }
     catch(e){ fallback(); }
   });
+
+  // ---- Charts: data from reports/summary.json in each project ----
+  var tip=document.createElement('div'); tip.className='tip'; tip.setAttribute('role','tooltip'); document.body.appendChild(tip);
+  function showTip(e,t){ tip.textContent=t; tip.style.opacity=1; var x=Math.min(e.clientX+14, window.innerWidth-tip.offsetWidth-8); tip.style.left=x+'px'; tip.style.top=(e.clientY-36)+'px'; }
+  function hideTip(){ tip.style.opacity=0; }
+  function hover(el,t){ el.addEventListener('mousemove',function(e){showTip(e,t)}); el.addEventListener('mouseleave',hideTip); el.tabIndex=0; el.setAttribute('aria-label',t);
+    el.addEventListener('focus',function(){var r=el.getBoundingClientRect(); showTip({clientX:r.left+r.width/2,clientY:r.top},t)}); el.addEventListener('blur',hideTip); }
+
+  var c1data={
+    all:{n:[13549,6238,2283,1929,919], v:[78.4,57.1,39.9,30.1,14.3]},
+    mod:{n:[12803,5873,2121,1817,852], v:[79.6,58.2,41.2,30.0,13.9]},
+    low:{n:[481,164,53,48,null], v:[89.0,84.1,67.9,75.0,null]}
+  };
+  var bands=['0','1','2','3–4','5+'];
+  function drawC1(k){
+    var d=c1data[k], el=document.getElementById('c1'); el.innerHTML='';
+    el.setAttribute('aria-label','SLA met by times reassigned: '+bands.map(function(b,i){return b+': '+(d.v[i]==null?'too few tickets':d.v[i]+'%')}).join(', '));
+    bands.forEach(function(b,i){
+      var bar=document.createElement('div'); bar.className='bar'+(i===0?'':' hl');
+      var v=d.v[i];
+      bar.innerHTML='<span class="v">'+(v==null?'n&lt;30':Math.round(v)+'%')+'</span><i style="height:'+(v==null?0:v*0.82)+'%"></i><span class="x">'+b+'</span>';
+      hover(bar, v==null?('Reassigned '+b+': fewer than 30 tickets'):('Reassigned '+b+' times: '+v+'% met SLA ('+d.n[i].toLocaleString()+' tickets)'));
+      el.appendChild(bar);
+    });
+  }
+  var c2data=[
+    ['Payment block',55839,281.5,0],['Invoice before goods receipt (allowed)',16356,71.6,0],
+    ['Same person ordered and received',5149,84.9,1],['PO raised after the invoice',3450,27.5,1],
+    ['Price changed after invoice',2195,84.7,0],['Paid without goods receipt',655,1.8,1]];
+  function drawC2(k){
+    var el=document.getElementById('c2'); el.innerHTML='';
+    var idx=k==='lines'?1:2, max=Math.max.apply(null,c2data.map(function(r){return r[idx]}));
+    var rows=c2data.slice().sort(function(a,b){return b[idx]-a[idx]});
+    rows.forEach(function(r){
+      var row=document.createElement('div'); row.className='hbar'+(r[3]?' hl':'');
+      var lab=k==='lines'?r[1].toLocaleString()+' lines':'€'+r[2]+'M';
+      row.innerHTML='<span class="lbl">'+r[0]+'</span><span class="track"><i style="width:'+(r[idx]/max*78)+'%"></i><span class="v">'+lab+'</span></span>';
+      hover(row, r[0]+': '+r[1].toLocaleString()+' PO lines, €'+r[2]+'M PO value'+(r[3]?' (high risk)':''));
+      el.appendChild(row);
+    });
+    el.setAttribute('aria-label','Control exceptions by '+(k==='lines'?'PO lines':'PO value')+': '+rows.map(function(r){return r[0]+' '+(k==='lines'?r[1]:'€'+r[2]+'M')}).join('; '));
+  }
+  document.querySelectorAll('.seg').forEach(function(seg){
+    seg.addEventListener('click',function(e){
+      var b=e.target.closest('button'); if(!b) return;
+      seg.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed', x===b?'true':'false')});
+      (seg.dataset.chart==='c1'?drawC1:drawC2)(b.dataset.k);
+    });
+  });
+  drawC1('all'); drawC2('lines');
+
+  // ---- Experiment sizing, same formula as src/prioritise.py ----
+  var eff=document.getElementById('eff');
+  function size(){
+    var p1=.22, d=+eff.value/100, p2=p1-d, za=1.959964, zb=0.841621, pb=(p1+p2)/2;
+    var n=Math.pow(za*Math.sqrt(2*pb*(1-pb))+zb*Math.sqrt(p1*(1-p1)+p2*(1-p2)),2)/(d*d);
+    var adj=Math.ceil(Math.ceil(n)*1.15);
+    document.getElementById('pT').textContent=Math.round(p2*100);
+    document.getElementById('nArm').textContent=adj.toLocaleString();
+    document.getElementById('months').textContent=(2*adj/300).toFixed(1);
+  }
+  eff.addEventListener('input',size); size();
 })();
 </script>
 
