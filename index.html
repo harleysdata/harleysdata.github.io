@@ -605,9 +605,9 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
           <span class="sym" aria-hidden="true">✦</span>
           <h3>Halloween Weekend Picker</h3>
           <span class="for">For a ~1,200-member Discord server</span>
-          <p>A tracker that helps a large server agree on its Halloween weekend plans in one place instead of across endless threads.</p>
+          <p>A voting app that got a large server to agree on its Halloween plans in one place instead of across endless threads. Two rounds, live totals, no sign-up.</p>
           <div class="tools"><span class="chip">Google Apps Script</span><span class="chip">Community planning</span></div>
-          <a class="portal" data-portal="halloween" href="" target="_blank" rel="noopener"><span class="glyph" aria-hidden="true">✦</span>Click to pick the weekend<span class="arrow" aria-hidden="true">→</span></a>
+          <a class="portal" data-portal="halloween" href="" target="_blank" rel="noopener"><span class="glyph" aria-hidden="true">✦</span>Click to see how we picked<span class="arrow" aria-hidden="true">→</span></a>
         </article>
         <article class="build">
           <span class="sym" aria-hidden="true">♡</span>
@@ -671,7 +671,7 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
   // ---- Community portals: paste each live web-app link here ----
   var PORTALS={
     lounge:'',     // GTA Girl Lounge: Apps Script web app URL (Deploy → Manage deployments → Web app)
-    halloween:'',  // Halloween Weekend Picker: Apps Script web app URL
+    halloween:'halloween-picker/',  // case study: voting closed after Halloween 2026
     matrix:'dating-matrix/'
   };
   document.querySelectorAll('a.portal').forEach(function(a){

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Halloween Weekend Picker · Hira (Harley) Hasan</title>
+<meta name="description" content="How a ~1,200-member Discord server picked its Halloween plans with a free Google Sheets and Apps Script voting app.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400&family=IM+Fell+English+SC&display=swap">
+<style>
+:root{--night:#0c0b12;--panel:#141221;--veil:#2a2640;--bone:#efe7e4;--ash:#a8a0b8;--violet:#8f86d6;--moon:#b9b3e6;--pumpkin:#e8833a;
+  --display:"Fraunces",Georgia,serif;--body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;--card:"IM Fell English SC",Georgia,serif;color-scheme:dark}
+*{box-sizing:border-box}
+html{background:#0b0a10}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse 80% 600px at 80% 0%,rgba(232,131,58,.10),transparent 70%),#0c0b12;color:var(--bone);font:17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+a{color:var(--moon)}
+.wrap{max-width:860px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left,0px))}
+.top{border-bottom:1px solid var(--veil)}
+.top .wrap{display:flex;justify-content:space-between;gap:12px;padding-block:14px;font-family:var(--mono);font-size:12.5px;flex-wrap:wrap}
+.top a{color:var(--ash);text-decoration:none}.top a:hover{color:var(--bone)}
+header{padding:64px 0 28px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--pumpkin)}
+h1{font-family:var(--card);font-weight:400;font-size:clamp(38px,6vw,60px);line-height:1.05;margin:10px 0 14px}
+.lede{font-family:var(--display);font-style:italic;font-weight:300;font-size:20px;color:var(--ash);max-width:36em;margin:0}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.facts span{font-family:var(--mono);font-size:12px;padding:4px 10px;border:1px solid var(--veil);border-radius:2px;color:var(--bone)}
+section{padding:36px 0;border-top:1px solid var(--veil)}
+h2{font-family:var(--display);font-weight:500;font-size:28px;margin:0 0 14px}
+p{margin:0 0 12px;color:var(--ash);max-width:40em} p b{color:var(--bone);font-weight:500}
+.steps{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;counter-reset:s}
+.steps li{padding:18px;border:1px solid var(--veil);border-radius:4px;background:var(--panel);counter-increment:s;font-size:15.5px;color:var(--ash)}
+.steps li::before{content:counter(s,upper-roman);display:block;font-family:var(--card);font-size:24px;color:var(--moon);margin-bottom:6px}
+.steps b{color:var(--bone);font-weight:500;display:block;margin-bottom:4px}
+.round{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:8px}
+.panel{padding:20px;border:1px solid var(--veil);border-radius:4px;background:var(--panel);display:flex;flex-direction:column;gap:12px;min-width:0}
+.panel h3{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--moon);font-weight:400;margin:0}
+.bar{display:grid;grid-template-columns:110px 1fr 74px;gap:10px;align-items:center;font-size:14.5px}
+.bar i{display:block;height:12px;border-radius:0 4px 4px 0;background:#5d5694}
+.bar.win i{background:var(--pumpkin)}
+.bar span:last-child{font-family:var(--mono);font-size:13px;color:var(--ash);text-align:right;font-variant-numeric:tabular-nums}
+.verdict{font-family:var(--display);font-style:italic;color:var(--bone);font-size:17px;margin:0}
+.learn{margin:0;padding-left:20px;color:var(--ash)} .learn li{margin-bottom:8px} .learn b{color:var(--bone);font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{font-family:var(--mono);font-size:12px;padding:3px 9px;border:1px solid var(--veil);border-radius:2px;color:var(--ash)}
+footer{padding:36px 0 56px;border-top:1px solid var(--veil);font-size:14px;color:var(--ash)}
+@media (max-width:700px){.steps,.round{grid-template-columns:1fr}.bar{grid-template-columns:96px 1fr 64px}}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap"><a href="../index.html#craft">← II · The Craft</a><a href="../index.html">Hira (Harley) Hasan</a></div></div>
+<main class="wrap">
+  <header>
+    <p class="eyebrow">Community build · October 2026 · voting closed</p>
+    <h1>Halloween Weekend Picker</h1>
+    <p class="lede">A ~1,200-member Discord server wanted to go out together for Halloween, and the plans were scattered across chat threads. I built a free voting app so everyone could say when, where and what in one place, and the totals updated live for everyone.</p>
+    <div class="facts"><span>Google Apps Script</span><span>Google Sheets</span><span>Mobile-first</span><span>$0 to run</span><span>No sign-up needed</span></div>
+  </header>
+
+  <section>
+    <h2>How it worked</h2>
+    <ol class="steps">
+      <li><b>One link, on any phone</b>People opened the web app from Discord and picked the nights they were free, their areas, the kinds of events they wanted, and specific events from a curated list.</li>
+      <li><b>A sheet as the database</b>Every vote saved as one row in a Google Sheet. A private voter key let people come back and change their vote without making an account.</li>
+      <li><b>Totals that update themselves</b>A summary tab added everything up with formulas, so the group could watch the plan form instead of waiting for someone to count replies.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>What the group decided</h2>
+    <p>It ran in two rounds: first to pick the best night of the October 16–18 weekend, then to plan Halloween weekend itself.</p>
+    <div class="round">
+      <div class="panel">
+        <h3>Round 1 · Who's free, Oct 16–18</h3>
+        <div class="bar"><span>Friday</span><i style="width:33%"></i><span>3 free</span></div>
+        <div class="bar win"><span>Saturday</span><i style="width:100%"></i><span>9 free</span></div>
+        <div class="bar"><span>Sunday</span><i style="width:22%"></i><span>2 free</span></div>
+        <p class="verdict">Saturday evening, clearly. Most people who were free wanted the evening, and Downtown Toronto was the top area.</p>
+      </div>
+      <div class="panel">
+        <h3>Round 2 · Going out on Halloween weekend</h3>
+        <div class="bar win"><span>Fri Oct 30</span><i style="width:88%"></i><span>14 of 16</span></div>
+        <div class="bar"><span>Sat Oct 31</span><i style="width:85%"></i><span>11 of 13</span></div>
+        <div class="bar"><span>Fri prime time</span><i style="width:100%"></i><span>14 people</span></div>
+        <p class="verdict">Both nights were on. Friday drew more people, and prime time on Friday was the single most popular slot.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>What I learned</h2>
+    <ul class="learn">
+      <li><b>Make "maybe" an option.</b> For Friday of Halloween weekend, 7 people answered maybe and 6 said going. A yes/no form would have hidden almost half the interest.</li>
+      <li><b>Let people change their minds.</b> The voter key updated someone's existing row instead of adding a duplicate, without asking anyone to sign up.</li>
+      <li><b>Show the totals to everyone.</b> A live summary meant nobody had to count replies, and everyone could see where the group was leaning.</li>
+      <li><b>Reuse what works.</b> The same pattern, a sheet as the database plus a small Apps Script page, now runs the GTA Girl Lounge and my Belladonna check-in prototype.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Built with</h2>
+    <div class="chips"><span>Google Apps Script (web app)</span><span>Google Sheets (database + live summary formulas)</span><span>HTML · CSS · JavaScript</span></div>
+  </section>
+</main>
+<footer><div class="wrap">Voting closed after Halloween 2026. Member names and votes stay private; this page shows totals only. · <a href="../index.html#craft">Back to The Craft</a></div></footer>
+</body>
+</html>
