@@ -170,8 +170,23 @@ figcaption{font-size:13px;color:var(--ash)}
 .build .for{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--moon)}
 .build p{color:var(--ash);font-size:15.5px}
 .build .tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:6px}
-.build a.go{font-family:var(--mono);font-size:13px;color:var(--moon);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--moon) 50%,transparent);align-self:flex-start}
-.build a.go:hover{color:var(--bone)}
+/* Portals: each community card opens its live platform. The whole card is clickable. */
+.build{transition:transform .35s cubic-bezier(.3,.7,.3,1),border-color .35s,box-shadow .35s}
+.build:has(a.portal):hover,.build:has(a.portal:focus-visible){transform:translateY(-4px);border-color:var(--violet);box-shadow:0 18px 40px -18px rgba(143,134,214,.55)}
+.portal{display:inline-flex;align-items:center;gap:10px;align-self:flex-start;margin-top:8px;padding:10px 18px 10px 14px;border:1px solid var(--violet);border-radius:999px;
+  font-family:var(--card);font-size:17px;letter-spacing:.02em;color:var(--bone);text-decoration:none;
+  background:linear-gradient(110deg,transparent 30%,rgba(185,179,230,.28) 50%,transparent 70%) 200% 0/250% 100% no-repeat,rgba(143,134,214,.10);
+  transition:background-position .9s ease,color .3s}
+a.portal::after{content:"";position:absolute;inset:0;border-radius:4px}
+a.portal:focus-visible{outline:2px solid var(--moon);outline-offset:3px}
+.portal .glyph{display:inline-block;color:var(--moon);font-size:18px;transition:transform .7s cubic-bezier(.3,.7,.3,1)}
+.portal .arrow{font-family:var(--mono);font-size:14px;color:var(--moon);transition:transform .35s}
+.build:hover a.portal,a.portal:focus-visible{background-position:-50% 0,0 0}
+.build:hover a.portal .glyph,a.portal:focus-visible .glyph{transform:rotate(360deg) scale(1.15)}
+.build:hover a.portal .arrow,a.portal:focus-visible .arrow{transform:translateX(4px)}
+.portal.sealed{border-style:dashed;border-color:#3a3560;color:var(--ash);background:none;cursor:default}
+.portal.sealed .glyph{color:#5d5694}
+@media (prefers-reduced-motion:reduce){.build,.portal,.portal .glyph,.portal .arrow{transition:none}}
 .duo{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .altar{padding:28px;border:1px solid var(--veil);border-radius:4px;display:flex;flex-direction:column;gap:12px;min-width:0}
 .altar h3{font-family:var(--card);font-weight:400;font-size:28px;color:var(--bone)}
@@ -297,93 +312,43 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
       <div class="deck" aria-label="Two tarot cards: I, The Magician, for the work; II, The High Priestess, for the craft">
         <a class="c2" href="#craft" aria-label="Card II, The High Priestess: go to The Craft, my community and creative work">
 <svg viewBox="0 0 280 480" aria-hidden="true" focusable="false">
-<defs>
-<linearGradient id="pbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#17132a"/><stop offset="1" stop-color="#0b0a12"/></linearGradient>
-<pattern id="pstars" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="4" cy="5" r=".8" fill="#cfc9f2" fill-opacity=".22"/><circle cx="15" cy="16" r=".6" fill="#cfc9f2" fill-opacity=".14"/></pattern>
-<radialGradient id="pglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#b9b3e6" stop-opacity=".28"/><stop offset="1" stop-color="#b9b3e6" stop-opacity="0"/></radialGradient>
-</defs>
-<rect x="4" y="4" width="272" height="472" rx="16" fill="url(#pbg)" stroke="#8f86d6" stroke-width="2"/>
-<rect x="18" y="18" width="244" height="444" rx="8" fill="url(#pstars)" stroke="#8f86d6" stroke-opacity=".55"/>
-<text x="140" y="56" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="28" fill="#b9b3e6">II</text>
-<!-- veil between the pillars, with pomegranates -->
-<rect x="58" y="80" width="164" height="300" fill="#1c1830"/>
-<g fill="#6b2a4a" fill-opacity=".8"><circle cx="78" cy="104" r="5"/><circle cx="110" cy="96" r="5"/><circle cx="170" cy="96" r="5"/><circle cx="202" cy="104" r="5"/><circle cx="76" cy="150" r="5"/><circle cx="204" cy="150" r="5"/></g>
-<!-- pillars B and J -->
-<rect x="36" y="78" width="24" height="306" fill="#141122" stroke="#5d5694" stroke-width="1.2"/>
-<rect x="31" y="70" width="34" height="10" rx="2" fill="#141122" stroke="#5d5694"/>
-<text x="48" y="232" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="16" fill="#b9b3e6">B</text>
-<rect x="220" y="78" width="24" height="306" fill="#d9d4ee"/>
-<rect x="215" y="70" width="34" height="10" rx="2" fill="#d9d4ee"/>
-<text x="232" y="232" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="16" fill="#17132a">J</text>
-<!-- glow + triple-moon crown -->
-<circle cx="140" cy="118" r="58" fill="url(#pglow)"/>
-<circle cx="140" cy="82" r="8" fill="none" stroke="#d9d4ee" stroke-width="2"/>
-<path d="M124 76a8 8 0 1 0 0 12a6 8 0 1 1 0-12z" fill="#d9d4ee"/>
-<path d="M156 76a8 8 0 1 1 0 12a6 8 0 1 0 0-12z" fill="#d9d4ee"/>
-<!-- figure: robe, hood, face -->
-<path d="M100 300c4-70 14-130 40-150c26 20 36 80 40 150z" fill="#2a2348"/>
-<path d="M112 300c4-54 12-104 28-118c16 14 24 64 28 118z" fill="#d9d4ee" fill-opacity=".9"/>
-<path d="M140 190v104" stroke="#8f86d6" stroke-width="1.5"/>
-<path d="M132 214h16M140 206v16" stroke="#2a2348" stroke-width="2.4" stroke-linecap="round"/>
-<path d="M114 126c0-24 12-36 26-36s26 12 26 36c2 22-6 40-26 44c-20-4-28-22-26-44z" fill="#2a2348"/>
-<path d="M121 118c-5 22-3 40 5 52h28c8-12 10-30 5-52z" fill="#120f1f"/>
-<circle cx="140" cy="124" r="17" fill="#c08a6c"/>
-<path d="M123 122c0-16 8-22 17-22s17 6 17 22c-4-8-10-11-17-11s-13 3-17 11z" fill="#120f1f"/>
-<path d="M132 125q3 2 6 0M142 125q3 2 6 0" fill="none" stroke="#1a1320" stroke-width="1.6" stroke-linecap="round"/>
-<path d="M136 133q4 3 8 0" fill="none" stroke="#5a2a2a" stroke-width="1.6" stroke-linecap="round"/>
-<!-- scroll in her lap -->
-<rect x="118" y="252" width="44" height="22" rx="3" fill="#ece4d6" transform="rotate(-8 140 263)"/>
-<text x="140" y="268" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="9" fill="#2a2348" transform="rotate(-8 140 263)">TORA</text>
-<!-- water and crescent at her feet -->
-<path d="M58 384c20-8 40 8 60 0s40-8 60 0s32 8 44 0v12H58z" fill="#2e2a4a"/>
-<path d="M120 312a20 20 0 1 0 40 0a16 14 0 1 1-40 0z" fill="#d9d4ee"/>
-<text x="140" y="430" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="19" letter-spacing="1.2" fill="#b9b3e6">The High Priestess</text>
-<text x="140" y="450" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing="2" fill="#a8a0b8">HARLEY · COMMUNITY · CRAFT</text>
+<defs><linearGradient id="pbg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#15121f"/><stop offset="1" stop-color="#0e0c17"/></linearGradient>
+<radialGradient id="pglow2" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#b9b3e6" stop-opacity=".32"/><stop offset="1" stop-color="#b9b3e6" stop-opacity="0"/></radialGradient>
+<mask id="pmL"><rect x="0" y="0" width="280" height="480" fill="#fff"/><circle cx="96" cy="212" r="21" fill="#000"/></mask>
+<mask id="pmR"><rect x="0" y="0" width="280" height="480" fill="#fff"/><circle cx="184" cy="212" r="21" fill="#000"/></mask></defs>
+<rect x="4" y="4" width="272" height="472" rx="16" fill="url(#pbg2)" stroke="#8f86d6" stroke-width="2"/>
+<rect x="18" y="18" width="244" height="444" rx="9" fill="none" stroke="#2e2a4a" stroke-width="1.2"/>
+<g fill="#cfc9f2" opacity=".5"><circle cx="70" cy="40" r="1.2"/><circle cx="226" cy="58" r="1"/><circle cx="244" cy="400" r="1.1"/><circle cx="36" cy="330" r=".9"/></g>
+<text x="140" y="70" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="30" fill="#b9b3e6" letter-spacing="4">II</text>
+<rect x="40" y="104" width="20" height="270" fill="#1d1a2c" stroke="#3a3560"/>
+<rect x="220" y="104" width="20" height="270" fill="#d9d4ee" opacity=".88"/>
+<text x="50" y="98" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="14" fill="#8f86d6">B</text>
+<text x="230" y="98" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="14" fill="#8f86d6">J</text>
+<circle cx="140" cy="212" r="88" fill="url(#pglow2)"/>
+<circle cx="140" cy="212" r="30" fill="none" stroke="#d9d4ee" stroke-width="2.6"/>
+<circle cx="86" cy="212" r="23" fill="#d9d4ee" mask="url(#pmL)"/>
+<circle cx="194" cy="212" r="23" fill="#d9d4ee" mask="url(#pmR)"/>
+<rect x="112" y="290" width="56" height="40" rx="4" fill="none" stroke="#8f86d6" stroke-width="2"/>
+<line x1="123" y1="304" x2="157" y2="304" stroke="#8f86d6" stroke-width="1.6"/><line x1="123" y1="316" x2="149" y2="316" stroke="#8f86d6" stroke-width="1.6"/>
+<text x="140" y="424" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="16.5" fill="#efe7e4" letter-spacing="3">THE HIGH PRIESTESS</text>
 </svg>
 
           <span class="cap">II · The Craft</span>
         </a>
         <a class="c1" href="#work" aria-label="Card I, The Magician: go to The Work, my projects and experience">
 <svg viewBox="0 0 280 480" aria-hidden="true" focusable="false">
-<defs>
-<linearGradient id="fbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c0d10"/><stop offset="1" stop-color="#0c0a0b"/></linearGradient>
-<pattern id="fgrid" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0H0V16" fill="none" stroke="#d42a35" stroke-opacity=".08" stroke-width="1"/></pattern>
-</defs>
-<rect x="4" y="4" width="272" height="472" rx="16" fill="url(#fbg)" stroke="#d42a35" stroke-width="2"/>
-<rect x="18" y="18" width="244" height="444" rx="8" fill="url(#fgrid)" stroke="#d42a35" stroke-opacity=".55"/>
-<text x="140" y="56" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="28" fill="#d42a35">I</text>
-<g opacity=".9"><rect x="36" y="168" width="7" height="18" fill="#d42a35" fill-opacity=".55"/><rect x="46" y="158" width="7" height="28" fill="#d42a35" fill-opacity=".7"/><rect x="56" y="146" width="7" height="40" fill="#d42a35"/><line x1="33" y1="187" x2="67" y2="187" stroke="#d42a35" stroke-width="1.2"/></g>
-<g opacity=".9"><path d="M214 196l10-10l8 6l12-16" fill="none" stroke="#d42a35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="244" cy="176" r="2.5" fill="#d42a35"/></g>
-<path d="M120 72c0-10 18-10 20 0c2 10 20 10 20 0c0-10-18-10-20 0c-2 10-20 10-20 0z" fill="none" stroke="#d42a35" stroke-width="2.2"/>
-<path d="M112 128c-2-30 12-42 28-42s30 12 28 42l6 58c-22 10-46 10-68 0z" fill="#21171f"/>
-<path d="M110 170c8-10 20-14 30-14s22 4 30 14l8 134h-76z" fill="#1b191c"/>
-<path d="M131 157l9 34l9-34z" fill="#ece4d6"/>
-<path d="M131 157l-7 10l12 26l4-2z" fill="#2b272b"/><path d="M149 157l7 10l-12 26l-4-2z" fill="#2b272b"/>
-<circle cx="140" cy="214" r="2.2" fill="#d42a35"/><circle cx="140" cy="232" r="2.2" fill="#d42a35"/>
-<path d="M164 170l20-30l12-28" fill="none" stroke="#1b191c" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-<circle cx="197" cy="108" r="6" fill="#c08a6c"/>
-<line x1="198" y1="106" x2="210" y2="76" stroke="#d42a35" stroke-width="3.2" stroke-linecap="round"/>
-<path d="M212 64l2.2 5.4l5.6 1.2l-5.6 1.4l-2.2 5.4l-2.2-5.4l-5.6-1.4l5.6-1.2z" fill="#ffc9a8"/>
-<path d="M116 172l-12 44l-6 34" fill="none" stroke="#1b191c" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-<circle cx="97" cy="254" r="6" fill="#c08a6c"/>
-<line x1="96" y1="258" x2="94" y2="270" stroke="#c08a6c" stroke-width="3" stroke-linecap="round"/>
-<rect x="134" y="140" width="12" height="18" rx="4" fill="#c08a6c"/>
-<circle cx="140" cy="122" r="22" fill="#c08a6c"/>
-<path d="M118 120c0-22 14-30 22-30s24 6 24 30c-6-10-14-14-24-14s-17 4-22 14z" fill="#21171f"/>
-<ellipse cx="132" cy="125" rx="2.3" ry="3" fill="#1a1320"/><ellipse cx="148" cy="125" rx="2.3" ry="3" fill="#1a1320"/>
-<path d="M134 134q6 5 12 0" fill="none" stroke="#5a2a2a" stroke-width="1.8" stroke-linecap="round"/>
-<circle cx="127" cy="131" r="3" fill="#e08a7a" fill-opacity=".35"/><circle cx="153" cy="131" r="3" fill="#e08a7a" fill-opacity=".35"/>
-<rect x="34" y="296" width="212" height="12" rx="2" fill="#2a1b1d" stroke="#d42a35" stroke-width="1.5"/>
-<rect x="42" y="308" width="196" height="76" fill="#1a1113"/>
-<line x1="42" y1="322" x2="238" y2="322" stroke="#d42a35" stroke-opacity=".5"/>
-<rect x="56" y="258" width="58" height="36" rx="3" fill="#24191b" stroke="#d42a35" stroke-width="1.5"/>
-<rect x="64" y="278" width="6" height="10" fill="#d42a35"/><rect x="74" y="272" width="6" height="16" fill="#d42a35"/><rect x="84" y="266" width="6" height="22" fill="#d42a35"/><rect x="94" y="274" width="6" height="14" fill="#d42a35" fill-opacity=".6"/>
-<rect x="50" y="293" width="70" height="4" rx="2" fill="#45383a"/>
-<circle cx="160" cy="288" r="8" fill="#d42a35"/><path d="M160 282l1.7 3.6l3.9.4l-2.9 2.6l.9 3.8l-3.6-2.1l-3.6 2.1l.9-3.8l-2.9-2.6l3.9-.4z" fill="#1a1113"/>
-<rect x="190" y="276" width="18" height="20" rx="3" fill="#ece4d6"/><path d="M208 280c7 0 7 12 0 12" fill="none" stroke="#ece4d6" stroke-width="2.5"/>
-<path d="M195 270c0-4 4-4 4-8M202 270c0-4 4-4 4-8" fill="none" stroke="#a8a0a0" stroke-width="1.3" stroke-linecap="round"/>
-<text x="140" y="430" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="21" letter-spacing="1.5" fill="#d42a35">The Magician</text>
-<text x="140" y="450" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing="2" fill="#a8a0a0">HIRA HASAN · PRODUCT · DATA</text>
+<defs><linearGradient id="mbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1012"/><stop offset="1" stop-color="#110b0d"/></linearGradient>
+<radialGradient id="mglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ff5a63" stop-opacity=".34"/><stop offset="1" stop-color="#ff5a63" stop-opacity="0"/></radialGradient></defs>
+<rect x="4" y="4" width="272" height="472" rx="16" fill="url(#mbg)" stroke="#d42a35" stroke-width="2"/>
+<rect x="18" y="18" width="244" height="444" rx="9" fill="none" stroke="#5a1c22" stroke-width="1.2"/>
+<text x="140" y="70" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="30" fill="#ff5a63" letter-spacing="4">I</text>
+<circle cx="140" cy="212" r="92" fill="url(#mglow)"/>
+<path d="M140 212C120 184 78 184 78 212C78 240 120 240 140 212C160 184 202 184 202 212C202 240 160 240 140 212Z" fill="none" stroke="#ff5a63" stroke-width="3.4"/>
+<line x1="140" y1="268" x2="140" y2="334" stroke="#efe7e4" stroke-width="2.6" stroke-linecap="round"/>
+<circle cx="140" cy="264" r="5" fill="#efe7e4"/>
+<g stroke="#8d8487" stroke-width="1.8" fill="none" stroke-linejoin="round">
+<rect x="62" y="352" width="22" height="22" rx="3"/><circle cx="117" cy="363" r="11"/><path d="M152 374L163 352L174 374Z"/><path d="M207 352v22M196 363h22"/></g>
+<text x="140" y="424" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="20" fill="#efe7e4" letter-spacing="4">THE MAGICIAN</text>
 </svg>
           <span class="cap">I · The Work</span>
         </a>
@@ -634,6 +599,7 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
           <span class="for">For a ~1,000-member GTA women's group</span>
           <p>Members make a profile, match with others on shared hobbies, and find local events. I approve members and events as admin, so it stays safe and on-topic.</p>
           <div class="tools"><span class="chip">Google Apps Script</span><span class="chip">Google Sheets</span><span class="chip">Moderation flow</span></div>
+          <a class="portal" data-portal="lounge" href="" target="_blank" rel="noopener"><span class="glyph" aria-hidden="true">☾</span>Click to enter the lounge<span class="arrow" aria-hidden="true">→</span></a>
         </article>
         <article class="build">
           <span class="sym" aria-hidden="true">✦</span>
@@ -641,6 +607,7 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
           <span class="for">For a ~1,200-member Discord server</span>
           <p>A tracker that helps a large server agree on its Halloween weekend plans in one place instead of across endless threads.</p>
           <div class="tools"><span class="chip">Google Apps Script</span><span class="chip">Community planning</span></div>
+          <a class="portal" data-portal="halloween" href="" target="_blank" rel="noopener"><span class="glyph" aria-hidden="true">✦</span>Click to pick the weekend<span class="arrow" aria-hidden="true">→</span></a>
         </article>
         <article class="build">
           <span class="sym" aria-hidden="true">♡</span>
@@ -648,7 +615,7 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
           <span class="for">For friends and followers</span>
           <p>Set your dating standards, swipe on 119 GTA personas, and get a reality check on who you'd actually end up with.</p>
           <div class="tools"><span class="chip">Firebase</span><span class="chip">JavaScript</span></div>
-          <a class="go" href="dating-matrix/">Take the quiz →</a>
+          <a class="portal" data-portal="matrix" href="dating-matrix/"><span class="glyph" aria-hidden="true">♡</span>Click to consult the Matrix<span class="arrow" aria-hidden="true">→</span></a>
         </article>
       </div>
     </div>
@@ -701,6 +668,20 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
 
 <script>
 (function(){
+  // ---- Community portals: paste each live web-app link here ----
+  var PORTALS={
+    lounge:'',     // GTA Girl Lounge: Apps Script web app URL (Deploy → Manage deployments → Web app)
+    halloween:'',  // Halloween Weekend Picker: Apps Script web app URL
+    matrix:'dating-matrix/'
+  };
+  document.querySelectorAll('a.portal').forEach(function(a){
+    var url=PORTALS[a.dataset.portal];
+    if(url){ a.href=url; if(/^https?:/.test(url)){a.target='_blank';a.rel='noopener';} else {a.removeAttribute('target');} return; }
+    var s=document.createElement('span'); s.className='portal sealed';
+    s.innerHTML=a.querySelector('.glyph').outerHTML+'Portal opening soon';
+    a.replaceWith(s);
+  });
+
   var btn=document.getElementById('copyBtn'), note=document.getElementById('copyNote'), email=document.getElementById('email');
   btn.addEventListener('click', function(){
     var text=email.textContent.trim();
