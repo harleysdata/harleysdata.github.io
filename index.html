@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Hira Hasan</title>
+<title>Hira Hasan · The Work &amp; The Craft</title>
 <meta name="description" content="Hira Hasan: Product & Data Analyst in Mississauga, ON. SQL, Python, Power BI, ServiceNow and SAP analytics. Ex-Scotiabank.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IM+Fell+English+SC&display=swap">
@@ -23,6 +23,8 @@
   --body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   --mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
   --card:"IM Fell English SC", Georgia, serif;
+  --violet:#8f86d6;     /* High Priestess accent */
+  --moon:#b9b3e6;       /* lighter violet */
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -46,22 +48,26 @@ header.top .wrap{display:flex;align-items:center;justify-content:space-between;g
 nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
 nav a{font-size:14px;text-decoration:none;color:var(--ash)}
 nav a:hover{color:var(--bone)}
+nav a.nav-craft{color:var(--moon)}
 
 /* Hero */
 .hero{position:relative;overflow:hidden}
 .hero .wrap{position:relative;padding-block:88px 104px}
-.hero-copy{position:relative;z-index:1;max-width:640px;min-width:0}
-.magician{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:48px;width:min(320px,32vw);aspect-ratio:280/480;max-width:100%;perspective:1400px;opacity:.6;transform:rotate(6deg);z-index:0;cursor:pointer;transition:opacity .4s}
-.magician:hover,.magician:focus-visible{opacity:.95}
-.magician:focus-visible{outline:2px solid var(--gold);outline-offset:6px;border-radius:16px}
-.flip{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.6,.05,.25,1)}
-.magician.turned .flip{transform:rotateY(180deg)}
-.face{position:absolute;inset:0;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;filter:drop-shadow(0 18px 30px rgba(0,0,0,.35))}
-.face.back{transform:rotateY(180deg)}
-.turn-hint{position:absolute;left:0;right:0;bottom:-30px;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ash)}
+.hero-copy{position:relative;z-index:1;max-width:600px;min-width:0}
+/* Two-card deck in the hero: I The Magician (the work), II The High Priestess (the craft) */
+.deck{position:absolute;right:max(48px,env(safe-area-inset-right,0px));top:56px;width:min(360px,34vw);aspect-ratio:400/430}
+.deck a{position:absolute;top:0;width:62%;aspect-ratio:280/480;display:block;text-decoration:none;transition:transform .45s cubic-bezier(.3,.7,.3,1),filter .3s;filter:drop-shadow(0 18px 30px rgba(0,0,0,.45))}
+.deck a svg{display:block;width:100%;height:100%}
+.deck .c1{left:0;transform:rotate(-7deg);z-index:2}
+.deck .c2{right:0;transform:rotate(7deg) translateY(18px);z-index:1}
+.deck a:hover,.deck a:focus-visible{z-index:3}
+.deck .c1:hover,.deck .c1:focus-visible{transform:rotate(-4deg) translateY(-10px)}
+.deck .c2:hover,.deck .c2:focus-visible{transform:rotate(4deg) translateY(4px)}
+.deck a:focus-visible{outline:2px solid var(--bone);outline-offset:6px;border-radius:16px}
+.deck .cap{position:absolute;left:0;right:0;bottom:-34px;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ash)}
+.deck .c1 .cap{color:var(--ember)} .deck .c2 .cap{color:var(--moon)}
 .side{display:flex;flex-direction:column;gap:22px;animation:sideIn .6s ease both}
 @keyframes sideIn{from{opacity:.4;transform:translateY(8px)}to{opacity:1;transform:none}}
-.hero.tech .eyebrow,.hero.tech h1 em{color:var(--ember)}
 .hero h1{font-size:clamp(40px,6vw,72px);font-weight:400;letter-spacing:-.015em}
 .hero h1 em{font-style:italic;color:var(--gold);font-weight:300}
 .hero .lede{font-size:19px;color:var(--ash);max-width:34em}
@@ -141,11 +147,36 @@ figcaption{font-size:13px;color:var(--ash)}
 .cert small{grid-column:1 / -1;color:var(--ash);font-size:14px}
 .cert.progress .when{color:var(--ember)}
 
-/* Placeholder for the creative studio */
-.later .wrap{padding-block:56px}
-.later-box{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:24px;border:1px dashed var(--veil);border-radius:2px}
-.later-box h3{font-family:var(--card);font-weight:400;font-size:24px;color:var(--ash)}
-.later-box p{font-size:14px;color:var(--ash)}
+/* Chapter openers: one per card */
+.chapter .wrap{padding-block:104px 24px;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center}
+.chapter .numeral{font-family:var(--card);font-size:clamp(64px,9vw,112px);line-height:.9;color:var(--gold)}
+.chapter .eyebrow{color:var(--gold)}
+.chapter h2{font-family:var(--card);font-weight:400;font-size:clamp(34px,5vw,54px);letter-spacing:.01em;margin-top:6px}
+.chapter p.read{font-family:var(--display);font-style:italic;font-size:19px;color:var(--ash);max-width:36em;margin-top:12px}
+.turns .wrap{padding-block:72px 32px;text-align:center;font-family:var(--card);font-size:20px;letter-spacing:.2em;color:var(--ash)}
+.turns span{color:var(--moon)}
+
+/* The Craft: the High Priestess side has its own palette */
+.craft{--gold:var(--violet);--ember:var(--moon);--veil:#2a2640;--night-2:#141221;
+  background:radial-gradient(ellipse 80% 50% at 80% 0%,rgba(143,134,214,.12),transparent 70%),linear-gradient(#0e0c15,#0b0a10);
+  border-top:1px solid #2a2640}
+.craft .eyebrow{color:var(--moon)}
+.craft section.block + section.block .wrap,.craft .block .wrap{border-top-color:#2a2640}
+.builds{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.build{display:flex;flex-direction:column;gap:12px;padding:22px;border:1px solid var(--veil);border-radius:4px;background:var(--night-2);min-width:0;position:relative}
+.build::before{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,var(--violet),transparent)}
+.build .sym{font-family:var(--card);font-size:26px;color:var(--moon);line-height:1}
+.build h3{font-size:24px}
+.build .for{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--moon)}
+.build p{color:var(--ash);font-size:15.5px}
+.build .tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:6px}
+.build a.go{font-family:var(--mono);font-size:13px;color:var(--moon);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--moon) 50%,transparent);align-self:flex-start}
+.build a.go:hover{color:var(--bone)}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.altar{padding:28px;border:1px solid var(--veil);border-radius:4px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.altar h3{font-family:var(--card);font-weight:400;font-size:28px;color:var(--bone)}
+.altar p{color:var(--ash)}
+.altar .status{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--moon)}
 
 /* Contact */
 .contact{display:flex;flex-direction:column;gap:20px;align-items:flex-start}
@@ -207,7 +238,10 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
 }
 @media (max-width:900px){
   .hero .wrap{display:flex;flex-direction:column}
-  .magician{position:relative;right:auto;top:auto;order:-1;width:220px;margin:0 auto 64px;opacity:1;transform:rotate(3deg)}
+  .deck{position:relative;right:auto;top:auto;width:min(320px,86vw);margin:48px auto 24px}
+  .deck .cap{display:none}
+  .builds,.duo{grid-template-columns:1fr}
+  .chapter .wrap{grid-template-columns:1fr;gap:6px;padding-block:72px 8px}
 }
 @media (max-width:520px){
   .skills,.deliverables{grid-template-columns:1fr}
@@ -216,7 +250,7 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .flip{transition:none}
+  .deck a{transition:none}
   .side{animation:none}
 }
 </style>
@@ -229,10 +263,10 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
     <a class="mark" href="#top">Hira Hasan<span>.</span></a>
     <nav aria-label="Main">
       <ul>
+        <li><a href="#work">I · The Work</a></li>
         <li><a href="#projects">Projects</a></li>
-        <li><a href="#skills">Skills</a></li>
         <li><a href="#experience">Experience</a></li>
-        <li><a href="#certifications">Certifications</a></li>
+        <li><a href="#craft" class="nav-craft">II · The Craft</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
@@ -242,15 +276,15 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
 <main id="top">
   <section class="hero">
     <div class="wrap">
-      <div class="hero-copy" aria-live="polite">
+      <div class="hero-copy">
         <div class="side side-front" id="sideFront">
-          <p class="eyebrow">Product &amp; Data Analyst · Mississauga, ON</p>
+          <p class="eyebrow">Hira (Harley) Hasan · Product &amp; Data Analyst · Mississauga, ON</p>
           <h1>Clear data, <em>better products.</em></h1>
           <p class="lede">I turn messy processes into clear requirements, build the reporting that shows leaders what's happening, and test systems before they reach users. <strong>Former Senior Program Analyst at Scotiabank</strong> and <strong>Product Manager at Jones Autos.</strong></p>
           <div class="ctas">
             <a class="btn solid" href="#projects">See my projects</a>
             <a class="btn" href="dashboards/service-desk.html">Live dashboards</a>
-            <a class="btn" href="#contact">Get in touch</a>
+            <a class="btn" href="#craft" style="border-color:var(--violet)">The creative side</a>
           </div>
           <div class="creds" aria-label="Highlights">
             <span>50,000+ contingent workers in compliance reporting</span>
@@ -258,22 +292,59 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
             <span>−20% development rework</span>
           </div>
         </div>
-        <div class="side side-back" id="sideBack" hidden>
-          <p class="eyebrow">The technical side</p>
-          <h1>The tools on <em>my table.</em></h1>
-          <p class="lede">I write the SQL, clean the data in Python, model it in Power BI, and test the result before anyone relies on it. The projects below run on real ServiceNow and SAP logs, and every number can be reproduced by running the code on GitHub.</p>
-          <div class="stack" aria-label="Technical tools">
-            <span>SQL</span><span>Python · pandas</span><span>Power BI · DAX</span><span>ServiceNow</span><span>SAP Fieldglass</span><span>SuccessFactors EC</span><span>Process mining</span><span>Experiment design</span><span>pytest</span><span>Jira</span><span>AI evaluation</span>
-          </div>
-          <div class="ctas">
-            <a class="btn solid" href="https://github.com/harleysdata/portfolio" target="_blank" rel="noopener">View the code on GitHub</a>
-            <a class="btn" href="#projects">See the projects</a>
-          </div>
         </div>
       </div>
-      <div class="magician" id="card" role="button" tabindex="0" aria-pressed="false" aria-label="Tarot card I, The Magician. Upright: Product and Data. Press to turn the card and see the technical side.">
-        <div class="flip">
-<svg class="face front" viewBox="0 0 280 480" aria-hidden="true" focusable="false">
+      <div class="deck" aria-label="Two tarot cards: I, The Magician, for the work; II, The High Priestess, for the craft">
+        <a class="c2" href="#craft" aria-label="Card II, The High Priestess: go to The Craft, my community and creative work">
+<svg viewBox="0 0 280 480" aria-hidden="true" focusable="false">
+<defs>
+<linearGradient id="pbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#17132a"/><stop offset="1" stop-color="#0b0a12"/></linearGradient>
+<pattern id="pstars" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="4" cy="5" r=".8" fill="#cfc9f2" fill-opacity=".22"/><circle cx="15" cy="16" r=".6" fill="#cfc9f2" fill-opacity=".14"/></pattern>
+<radialGradient id="pglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#b9b3e6" stop-opacity=".28"/><stop offset="1" stop-color="#b9b3e6" stop-opacity="0"/></radialGradient>
+</defs>
+<rect x="4" y="4" width="272" height="472" rx="16" fill="url(#pbg)" stroke="#8f86d6" stroke-width="2"/>
+<rect x="18" y="18" width="244" height="444" rx="8" fill="url(#pstars)" stroke="#8f86d6" stroke-opacity=".55"/>
+<text x="140" y="56" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="28" fill="#b9b3e6">II</text>
+<!-- veil between the pillars, with pomegranates -->
+<rect x="58" y="80" width="164" height="300" fill="#1c1830"/>
+<g fill="#6b2a4a" fill-opacity=".8"><circle cx="78" cy="104" r="5"/><circle cx="110" cy="96" r="5"/><circle cx="170" cy="96" r="5"/><circle cx="202" cy="104" r="5"/><circle cx="76" cy="150" r="5"/><circle cx="204" cy="150" r="5"/></g>
+<!-- pillars B and J -->
+<rect x="36" y="78" width="24" height="306" fill="#141122" stroke="#5d5694" stroke-width="1.2"/>
+<rect x="31" y="70" width="34" height="10" rx="2" fill="#141122" stroke="#5d5694"/>
+<text x="48" y="232" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="16" fill="#b9b3e6">B</text>
+<rect x="220" y="78" width="24" height="306" fill="#d9d4ee"/>
+<rect x="215" y="70" width="34" height="10" rx="2" fill="#d9d4ee"/>
+<text x="232" y="232" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="16" fill="#17132a">J</text>
+<!-- glow + triple-moon crown -->
+<circle cx="140" cy="118" r="58" fill="url(#pglow)"/>
+<circle cx="140" cy="82" r="8" fill="none" stroke="#d9d4ee" stroke-width="2"/>
+<path d="M124 76a8 8 0 1 0 0 12a6 8 0 1 1 0-12z" fill="#d9d4ee"/>
+<path d="M156 76a8 8 0 1 1 0 12a6 8 0 1 0 0-12z" fill="#d9d4ee"/>
+<!-- figure: robe, hood, face -->
+<path d="M100 300c4-70 14-130 40-150c26 20 36 80 40 150z" fill="#2a2348"/>
+<path d="M112 300c4-54 12-104 28-118c16 14 24 64 28 118z" fill="#d9d4ee" fill-opacity=".9"/>
+<path d="M140 190v104" stroke="#8f86d6" stroke-width="1.5"/>
+<path d="M132 214h16M140 206v16" stroke="#2a2348" stroke-width="2.4" stroke-linecap="round"/>
+<path d="M114 126c0-24 12-36 26-36s26 12 26 36c2 22-6 40-26 44c-20-4-28-22-26-44z" fill="#2a2348"/>
+<path d="M121 118c-5 22-3 40 5 52h28c8-12 10-30 5-52z" fill="#120f1f"/>
+<circle cx="140" cy="124" r="17" fill="#c08a6c"/>
+<path d="M123 122c0-16 8-22 17-22s17 6 17 22c-4-8-10-11-17-11s-13 3-17 11z" fill="#120f1f"/>
+<path d="M132 125q3 2 6 0M142 125q3 2 6 0" fill="none" stroke="#1a1320" stroke-width="1.6" stroke-linecap="round"/>
+<path d="M136 133q4 3 8 0" fill="none" stroke="#5a2a2a" stroke-width="1.6" stroke-linecap="round"/>
+<!-- scroll in her lap -->
+<rect x="118" y="252" width="44" height="22" rx="3" fill="#ece4d6" transform="rotate(-8 140 263)"/>
+<text x="140" y="268" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="9" fill="#2a2348" transform="rotate(-8 140 263)">TORA</text>
+<!-- water and crescent at her feet -->
+<path d="M58 384c20-8 40 8 60 0s40-8 60 0s32 8 44 0v12H58z" fill="#2e2a4a"/>
+<path d="M120 312a20 20 0 1 0 40 0a16 14 0 1 1-40 0z" fill="#d9d4ee"/>
+<text x="140" y="430" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="19" letter-spacing="1.2" fill="#b9b3e6">The High Priestess</text>
+<text x="140" y="450" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing="2" fill="#a8a0b8">HARLEY · COMMUNITY · CRAFT</text>
+</svg>
+
+          <span class="cap">II · The Craft</span>
+        </a>
+        <a class="c1" href="#work" aria-label="Card I, The Magician: go to The Work, my projects and experience">
+<svg viewBox="0 0 280 480" aria-hidden="true" focusable="false">
 <defs>
 <linearGradient id="fbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c0d10"/><stop offset="1" stop-color="#0c0a0b"/></linearGradient>
 <pattern id="fgrid" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0H0V16" fill="none" stroke="#d42a35" stroke-opacity=".08" stroke-width="1"/></pattern>
@@ -314,63 +385,20 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
 <text x="140" y="430" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="21" letter-spacing="1.5" fill="#d42a35">The Magician</text>
 <text x="140" y="450" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing="2" fill="#a8a0a0">HIRA HASAN · PRODUCT · DATA</text>
 </svg>
+          <span class="cap">I · The Work</span>
+        </a>
+      </div>
+    </div>
+  </section>
 
-<svg class="face back" viewBox="0 0 280 480" aria-hidden="true" focusable="false">
-<defs>
-<linearGradient id="bbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#240a0f"/><stop offset="1" stop-color="#0c0809"/></linearGradient>
-<pattern id="bdots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".9" fill="#ff5a63" fill-opacity=".18"/></pattern>
-</defs>
-<rect x="4" y="4" width="272" height="472" rx="16" fill="url(#bbg)" stroke="#ff5a63" stroke-width="2"/>
-<rect x="18" y="18" width="244" height="444" rx="8" fill="url(#bdots)" stroke="#ff5a63" stroke-opacity=".55"/>
-<text x="140" y="56" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="28" fill="#ff5a63">I</text>
-<!-- floating code: brackets and a query -->
-<text x="40" y="104" font-family="IBM Plex Mono, monospace" font-size="15" fill="#ff5a63" fill-opacity=".85">&lt;/&gt;</text>
-<text x="34" y="200" font-family="IBM Plex Mono, monospace" font-size="8.5" fill="#ffd9d9" fill-opacity=".75">SELECT</text>
-<text x="34" y="212" font-family="IBM Plex Mono, monospace" font-size="8.5" fill="#ffd9d9" fill-opacity=".55">GROUP BY</text>
-<text x="34" y="224" font-family="IBM Plex Mono, monospace" font-size="8.5" fill="#ffd9d9" fill-opacity=".4">HAVING</text>
-<!-- database cylinder -->
-<g transform="translate(220 176)"><ellipse cx="0" cy="0" rx="18" ry="6" fill="#2a0d12" stroke="#ff5a63" stroke-width="1.4"/><path d="M-18 0v26c0 3.3 8 6 18 6s18-2.7 18-6V0" fill="#1a0a0d" stroke="#ff5a63" stroke-width="1.4"/><path d="M-18 13c0 3.3 8 6 18 6s18-2.7 18-6" fill="none" stroke="#ff5a63" stroke-width="1.2" stroke-opacity=".7"/></g>
-<path d="M120 72c0-10 18-10 20 0c2 10 20 10 20 0c0-10-18-10-20 0c-2 10-20 10-20 0z" fill="none" stroke="#ff5a63" stroke-width="2.2"/>
-<!-- figure -->
-<path d="M112 128c-2-30 12-42 28-42s30 12 28 42l6 58c-22 10-46 10-68 0z" fill="#1a1218"/>
-<path d="M110 170c8-10 20-14 30-14s22 4 30 14l8 134h-76z" fill="#141215"/>
-<path d="M128 158l12 14l12-14" fill="none" stroke="#ff5a63" stroke-width="2"/>
-<path d="M164 170l20-30l12-28" fill="none" stroke="#141215" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-<circle cx="197" cy="108" r="6" fill="#c08a6c"/>
-<line x1="198" y1="106" x2="210" y2="76" stroke="#ff5a63" stroke-width="3.2" stroke-linecap="round"/>
-<path d="M212 62l2.6 6.2l6.4 1.4l-6.4 1.6l-2.6 6.2l-2.6-6.2l-6.4-1.6l6.4-1.4z" fill="#ffd9d9"/>
-<path d="M116 172l-12 44l-6 34" fill="none" stroke="#141215" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-<circle cx="97" cy="254" r="6" fill="#c08a6c"/>
-<rect x="134" y="140" width="12" height="18" rx="4" fill="#c08a6c"/>
-<circle cx="140" cy="122" r="22" fill="#c08a6c"/>
-<path d="M118 120c0-22 14-30 22-30s24 6 24 30c-6-10-14-14-24-14s-17 4-22 14z" fill="#1a1218"/>
-<!-- glasses -->
-<rect x="126" y="120" width="11" height="9" rx="3" fill="none" stroke="#ff5a63" stroke-width="1.4"/><rect x="143" y="120" width="11" height="9" rx="3" fill="none" stroke="#ff5a63" stroke-width="1.4"/><line x1="137" y1="124" x2="143" y2="124" stroke="#ff5a63" stroke-width="1.2"/>
-<ellipse cx="131.5" cy="125" rx="1.8" ry="2.4" fill="#1a1320"/><ellipse cx="148.5" cy="125" rx="1.8" ry="2.4" fill="#1a1320"/>
-<path d="M134 135q6 4 12 0" fill="none" stroke="#5a2a2a" stroke-width="1.8" stroke-linecap="round"/>
-<!-- table -->
-<rect x="34" y="296" width="212" height="12" rx="2" fill="#2a0f14" stroke="#ff5a63" stroke-width="1.5"/>
-<rect x="42" y="308" width="196" height="76" fill="#170a0d"/>
-<line x1="42" y1="322" x2="238" y2="322" stroke="#ff5a63" stroke-opacity=".5"/>
-<!-- terminal window -->
-<rect x="50" y="252" width="74" height="42" rx="3" fill="#120a0c" stroke="#ff5a63" stroke-width="1.5"/>
-<line x1="50" y1="260" x2="124" y2="260" stroke="#ff5a63" stroke-opacity=".6"/>
-<circle cx="56" cy="256" r="1.5" fill="#ff5a63"/><circle cx="61" cy="256" r="1.5" fill="#ff5a63" fill-opacity=".6"/>
-<text x="55" y="272" font-family="IBM Plex Mono, monospace" font-size="7" fill="#ffd9d9">&gt; python</text>
-<text x="55" y="283" font-family="IBM Plex Mono, monospace" font-size="7" fill="#ff5a63">✓ 15 tests</text>
-<rect x="46" y="293" width="82" height="4" rx="2" fill="#45383a"/>
-<!-- dashboard tile -->
-<rect x="150" y="262" width="38" height="32" rx="2" fill="#120a0c" stroke="#ff5a63" stroke-width="1.2"/>
-<path d="M155 286l7-8l6 4l9-11l6 4" fill="none" stroke="#ffd9d9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<!-- checklist -->
-<rect x="198" y="262" width="30" height="32" rx="2" fill="#ece4d6"/>
-<path d="M203 271l2 2l4-4M203 280l2 2l4-4M203 289l2 2l4-4" fill="none" stroke="#a3121f" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-<line x1="212" y1="271" x2="224" y2="271" stroke="#8a7f7f" stroke-width="1.2"/><line x1="212" y1="280" x2="224" y2="280" stroke="#8a7f7f" stroke-width="1.2"/><line x1="212" y1="289" x2="220" y2="289" stroke="#8a7f7f" stroke-width="1.2"/>
-<text x="140" y="430" text-anchor="middle" font-family="IM Fell English SC, Georgia, serif" font-size="21" letter-spacing="1.5" fill="#ff5a63">The Magician</text>
-<text x="140" y="450" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing="2" fill="#a8a0a0">SQL · PYTHON · POWER BI</text>
-</svg>
-        </div>
-        <span class="turn-hint" id="turnHint">Tap to see the technical side</span>
+  <section class="chapter" id="work" aria-labelledby="workTitle">
+    <div class="wrap">
+      <span class="numeral" aria-hidden="true">I</span>
+      <div>
+        <p class="eyebrow">The Magician · upright</p>
+        <h2 id="workTitle">The Work</h2>
+        <p class="read">The Magician turns the tools on the table into something real. This side is that: data, systems and product work, built on real data and built to be checked.</p>
+        <div class="stack" aria-label="Tools" style="margin-top:18px"><span>SQL</span><span>Python · pandas</span><span>Power BI · DAX</span><span>ServiceNow</span><span>SAP Fieldglass</span><span>SuccessFactors EC</span><span>Process mining</span><span>Experiment design</span><span>Jira</span><span>AI evaluation</span></div>
       </div>
     </div>
   </section>
@@ -578,21 +606,78 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
     </div>
   </section>
 
-  <section class="block later" id="studio" aria-label="Harley is Sp00ky, coming later">
+  <div class="turns" aria-hidden="true"><div class="wrap">✦ &nbsp;the card <span>turns</span>&nbsp; ✦</div></div>
+
+  <div class="craft" id="craft">
+  <section class="chapter" aria-labelledby="craftTitle">
     <div class="wrap">
-      <div class="later-box">
-        <h3>Harley is Sp00ky</h3>
-        <p>Creative studio and shop. Coming later.</p>
+      <span class="numeral" aria-hidden="true">II</span>
+      <div>
+        <p class="eyebrow">The High Priestess · Harley is Sp00ky</p>
+        <h2 id="craftTitle">The Craft</h2>
+        <p class="read">The High Priestess keeps what's beneath the surface: intuition, ritual, and the quiet work that holds a community together. This side is where I build for people I know, under my creative name.</p>
       </div>
     </div>
   </section>
 
-  <section class="block" id="contact">
+  <section class="block" id="community">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Community builds</p>
+        <h2>Small tools for real groups</h2>
+        <p>Each one started because a group I'm part of needed it. I design them, build them, and keep them running.</p>
+      </div>
+      <div class="builds">
+        <article class="build">
+          <span class="sym" aria-hidden="true">☾</span>
+          <h3>GTA Girl Lounge</h3>
+          <span class="for">For a ~1,000-member GTA women's group</span>
+          <p>Members make a profile, match with others on shared hobbies, and find local events. I approve members and events as admin, so it stays safe and on-topic.</p>
+          <div class="tools"><span class="chip">Google Apps Script</span><span class="chip">Google Sheets</span><span class="chip">Moderation flow</span></div>
+        </article>
+        <article class="build">
+          <span class="sym" aria-hidden="true">✦</span>
+          <h3>Halloween Weekend Picker</h3>
+          <span class="for">For a ~1,200-member Discord server</span>
+          <p>A tracker that helps a large server agree on its Halloween weekend plans in one place instead of across endless threads.</p>
+          <div class="tools"><span class="chip">Google Apps Script</span><span class="chip">Community planning</span></div>
+        </article>
+        <article class="build">
+          <span class="sym" aria-hidden="true">♡</span>
+          <h3>The Dating Matrix</h3>
+          <span class="for">For friends and followers</span>
+          <p>Set your dating standards, swipe on 119 GTA personas, and get a reality check on who you'd actually end up with.</p>
+          <div class="tools"><span class="chip">Firebase</span><span class="chip">JavaScript</span></div>
+          <a class="go" href="dating-matrix/">Take the quiz →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="studio">
+    <div class="wrap">
+      <div class="duo">
+        <div class="altar">
+          <span class="status">The shop</span>
+          <h3>Harley is Sp00ky</h3>
+          <p>My witchy, occult, artsy studio: tarot and oracle-inspired pieces sold on Etsy. I treat it like a product: experiments with listing quality, shop analytics and AI-assisted content for an alternative, budget-conscious audience.</p>
+        </div>
+        <div class="altar">
+          <span class="status">In the cauldron · early design</span>
+          <h3>Belladonna</h3>
+          <p>A routine and self-tracking app for neurodivergent, queer and non-binary women who grew up without structure. It's named for the plant that can poison or heal. I'm my own first test subject, and the first beta will run in Toronto.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <section class="block" id="contact" style="border-top:1px solid var(--veil)">
     <div class="wrap">
       <div class="contact">
         <p class="eyebrow">Contact</p>
         <h2>Let's talk.</h2>
-        <p style="color:var(--ash);max-width:36em">I'm open to Product Analyst, Business Analyst, Data Analyst, Product Owner and Program Analyst roles in Toronto and the GTA.</p>
+        <p style="color:var(--ash);max-width:36em">For work: I'm open to Product Analyst, Business Analyst, Data Analyst, Product Owner and Program Analyst roles in Toronto and the GTA. For the craft: collaborations and community projects are always welcome.</p>
         <div class="email-row">
           <span class="email" id="email">hasanhira10@gmail.com</span>
           <button class="btn" type="button" id="copyBtn">Copy email</button>
@@ -610,25 +695,12 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
 <footer>
   <div class="wrap">
     <span>© 2026 Hira Hasan · Mississauga, ON</span>
-    <span>Upright and turned, on purpose.</span>
+    <span>Two cards, one deck.</span>
   </div>
 </footer>
 
 <script>
 (function(){
-  var card=document.getElementById('card'), hint=document.getElementById('turnHint');
-  function turn(){
-    var t=card.classList.toggle('turned');
-    card.setAttribute('aria-pressed', t ? 'true' : 'false');
-    card.setAttribute('aria-label', t ? 'Tarot card I, The Magician. Turned: the technical side. Press to turn it back.' : 'Tarot card I, The Magician. Upright: Product and Data. Press to turn the card and see the technical side.');
-    hint.textContent = t ? 'Tap to turn it back' : 'Tap to see the technical side';
-    document.getElementById('sideFront').hidden = t;
-    document.getElementById('sideBack').hidden = !t;
-    document.querySelector('.hero').classList.toggle('tech', t);
-  }
-  card.addEventListener('click', turn);
-  card.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); turn(); } });
-
   var btn=document.getElementById('copyBtn'), note=document.getElementById('copyNote'), email=document.getElementById('email');
   btn.addEventListener('click', function(){
     var text=email.textContent.trim();
