@@ -184,6 +184,8 @@ a.portal:focus-visible{outline:2px solid var(--moon);outline-offset:3px}
 .build:hover a.portal,a.portal:focus-visible{background-position:-50% 0,0 0}
 .build:hover a.portal .glyph,a.portal:focus-visible .glyph{transform:rotate(360deg) scale(1.15)}
 .build:hover a.portal .arrow,a.portal:focus-visible .arrow{transform:translateX(4px)}
+.go-case{position:relative;z-index:2;align-self:flex-start;font-family:var(--mono);font-size:12.5px;color:var(--moon);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--moon) 45%,transparent)}
+.go-case:hover{color:var(--bone)}
 .portal.sealed{border-style:dashed;border-color:#3a3560;color:var(--ash);background:none;cursor:default}
 .portal.sealed .glyph{color:#5d5694}
 @media (prefers-reduced-motion:reduce){.build,.portal,.portal .glyph,.portal .arrow{transition:none}}
@@ -607,7 +609,8 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
           <span class="for">For a ~1,200-member Discord server</span>
           <p>A voting app that got a large server to agree on its Halloween plans in one place instead of across endless threads. Two rounds, live totals, no sign-up.</p>
           <div class="tools"><span class="chip">Google Apps Script</span><span class="chip">Community planning</span></div>
-          <a class="portal" data-portal="halloween" href="" target="_blank" rel="noopener"><span class="glyph" aria-hidden="true">✦</span>Click to see how we picked<span class="arrow" aria-hidden="true">→</span></a>
+          <a class="go-case" href="halloween-picker/">How it worked and what we picked →</a>
+          <a class="portal" data-portal="halloween" href="" target="_blank" rel="noopener"><span class="glyph" aria-hidden="true">✦</span>Click to open the picker<span class="arrow" aria-hidden="true">→</span></a>
         </article>
         <article class="build">
           <span class="sym" aria-hidden="true">♡</span>
@@ -670,8 +673,8 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
 (function(){
   // ---- Community portals: paste each live web-app link here ----
   var PORTALS={
-    lounge:'',     // GTA Girl Lounge: Apps Script web app URL (Deploy → Manage deployments → Web app)
-    halloween:'halloween-picker/',  // case study: voting closed after Halloween 2026
+    lounge:'https://claude.ai/artifact/S7MUrjeW5odriifVmCcsn6',     // GTA Women's Circle app (Claude artifact)
+    halloween:'https://claude.ai/artifact/BxSRTN1epEjuABfeDg1m4w',  // the original picker (Claude artifact); case study at halloween-picker/
     matrix:'dating-matrix/'
   };
   document.querySelectorAll('a.portal').forEach(function(a){
