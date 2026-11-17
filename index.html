@@ -612,7 +612,7 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
           <span class="for">For a ~1,200-member Discord server</span>
           <p>A voting app that got a large server to agree on its Halloween plans in one place instead of across endless threads. Two rounds, live totals, no sign-up.</p>
           <div class="tools"><span class="chip">Google Apps Script</span><span class="chip">Community planning</span></div>
-          <span class="go-row"><a class="go-case" href="halloween-picker/">How it worked →</a><a class="go-case" data-portal-link="halloween1" href="https://claude.ai/artifact/BxSRTN1epEjuABfeDg1m4w" target="_blank" rel="noopener">Round 1 picker (Oct 16–18) →</a></span>
+          <span class="go-row"><a class="go-case" href="halloween-picker/">How it worked →</a><a class="go-case" data-portal-link="halloween1" href="https://script.google.com/macros/s/AKfycbw7o0vn-kPYKjG9H0aYoONkm2LL9VkZTpo-Zehv1knm8prtzUQfdSP1362CwWZMexL2/exec" target="_blank" rel="noopener">Round 1 picker (Oct 16–18) →</a></span>
           <a class="portal" data-portal="halloween" href="" target="_blank" rel="noopener"><span class="glyph" aria-hidden="true">✦</span><span class="label">Click to pick the night</span><span class="arrow" aria-hidden="true">→</span></a>
         </article>
         <article class="build">
@@ -676,9 +676,9 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
 (function(){
   // ---- Community portals: paste each live web-app link here ----
   var PORTALS={
-    lounge:'https://claude.ai/artifact/S7MUrjeW5odriifVmCcsn6',     // GTA Women's Circle app (Claude artifact)
-    halloween:'https://script.google.com/macros/s/AKfycbyrLcEUurC-bQ3iQx0F28X1GrxWeDZGrSJQuqkykU0vbdspG8E0l7QHlSeo6zKUq26f/exec',  // Halloween nights picker, Oct 30–31 (Google Apps Script web app)
-    halloween1:'https://claude.ai/artifact/BxSRTN1epEjuABfeDg1m4w',  // round 1 picker, Oct 16–18 (Claude artifact)
+    lounge:'https://script.google.com/macros/s/AKfycbyrLcEUurC-bQ3iQx0F28X1GrxWeDZGrSJQuqkykU0vbdspG8E0l7QHlSeo6zKUq26f/exec',     // GTA Girl Lounge (Google Apps Script web app)
+    halloween:'https://script.google.com/macros/s/AKfycbw7o0vn-kPYKjG9H0aYoONkm2LL9VkZTpo-Zehv1knm8prtzUQfdSP1362CwWZMexL2/exec?p=night',  // Halloween Night Picker, Oct 30–31 (Apps Script, ?p=night)
+    halloween1:'https://script.google.com/macros/s/AKfycbw7o0vn-kPYKjG9H0aYoONkm2LL9VkZTpo-Zehv1knm8prtzUQfdSP1362CwWZMexL2/exec',  // round 1 picker, Oct 16–18 (Apps Script)
     matrix:'dating-matrix/'
   };
   document.querySelectorAll('a.portal').forEach(function(a){
